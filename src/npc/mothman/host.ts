@@ -11,10 +11,12 @@ import { flashlight, beamHits, cameraRay, failLight } from '../../flashlight'
 import { bounds, bands, roostSpot } from '../../config'
 import { telepathy, startTelepathy, hud, showCaption, showHint, closeDocument, docOpenFor, captionsPending } from '../../telepathy'
 import { setLoop, loopSound } from '../../audio'
-import { cabin, setLamp } from '../../cabin'
+import { cabin } from '../../cabin'
 import { layout } from '../../layout'
 import { setObjective } from '../../objectives'
 import { CAPTIONS, HINTS, OBJECTIVES, DEATHS } from '../../script'
+import { onReset, resetGame } from '../../game'
+import { insideBunker, keepOut, grace } from '../../shelter'
 
 /**
  * Host for the Mothman's HTN domain (mothman.domain). The host owns: sensing (facts), the replan policy (fact key
@@ -32,6 +34,7 @@ export const story = {
   collar: false, // Duke's collar picked up at bunker 7: summons him
   walkingOut: false, // after the reveal, the player has left the roost; the road back is the ending
   awake: false, // he does nothing, and is not even rendered, until the player has walked 55 m up the road (owner passes 5, 9)
+  // A death resets everything above (resetGame): the next night starts as the first did. Only `deaths` and `ended` keep.
   summoned: false, // latched once the collar's page is down and its lines have run: only then his final approach (owner pass 6)
   ended: false
 }
@@ -62,6 +65,7 @@ export class MothmanHost {
   private hoverSeed = Math.random() * 10
   private airborne = false
   private idleVariant = 0
+  private cabinOpen = false // !enter / !take: the one time he may be inside the cabin
 
   constructor() {
     const r = roostSpot()
@@ -71,6 +75,23 @@ export class MothmanHost {
       onDiagnostic: (d) => console.log(`[htn] ${d.code}: ${d.message}`)
     })
     engine.addSystem((dt) => this.update(dt))
+    onReset(() => this.reset())
+  }
+
+  /** Back to the roost, asleep, with the story at its first page. Called with the screen black; the running !take
+   *  executor keeps the lock until the fade-in is done, then the planner sees `dormant` and starts over. */
+  private reset() {
+    Object.assign(story, { phase: 'ignorant', scared: false, litAfterReveal: 0, collar: false, walkingOut: false, awake: false, summoned: false })
+    const r = roostSpot()
+    Transform.getMutable(this.body.root).position = Vector3.create(r.x, r.top, r.z)
+    this.body.setClip('idle_ground')
+    this.airborne = false
+    this.faceAt = null
+    this.setHum(false)
+    setLoop(this.drone, false)
+    this.eyes = 0
+    this.lastKey = ''
+    this.cabinOpen = false
   }
 
   // ---- sensing -------------------------------------------------------------------------------------------------
@@ -102,7 +123,7 @@ export class MothmanHost {
     const hidden = story.collar && !story.summoned // between the collar and the voice: out of sight, eyes dark
     if (!story.awake) {
       const p = this.player()
-      if (Math.hypot(p.x - SPAWN.x, p.z - SPAWN.z) > WAKE_DISTANCE || summoned || story.deaths > 0) {
+      if (Math.hypot(p.x - SPAWN.x, p.z - SPAWN.z) > WAKE_DISTANCE || summoned) {
         story.awake = true
         flashlight.litFor = 0 // the beam clock starts now: the first paper, read in the light at the gate, counts for nothing
       }
@@ -110,7 +131,9 @@ export class MothmanHost {
     const place = cabin.inside ? 'cabin' : 'woods'
     const lamp = cabin.lampOn ? 'on' : 'off'
     const lampLit = !cabin.lampOn || !cabin.inside ? 'none' : cabin.lampOnFor >= 110 ? 'spent' : cabin.lampOnFor >= 65 ? 'long' : cabin.lampOnFor >= 30 ? 'some' : 'none'
-    if (story.phase === 'revealed' && flashlight.on) {
+    const sheltered = insideBunker(this.player()) // a bunker: safe. He waits outside.
+    const reading = docOpenFor() >= 0 // a page is up: nothing moves on the player
+    if (story.phase === 'revealed' && flashlight.on && !grace()) {
       story.litAfterReveal += dt
       if (story.litAfterReveal > 18 && flashlight.dead <= 0 && flashlight.dying <= 0) {
         failLight(7)
@@ -132,9 +155,13 @@ export class MothmanHost {
     if (!story.awake) this.world.add('dormant')
     this.world.clear('hidden', 0)
     if (hidden) this.world.add('hidden')
+    this.world.clear('sheltered', 0)
+    if (sheltered) this.world.add('sheltered')
+    this.world.clear('reading', 0)
+    if (reading) this.world.add('reading')
     // Replan key: only events outside his control (the lights, the place, the story). Distance and fear are facts he
     // plans with, but changes he causes himself must not interrupt a running plan.
-    return `${beam}|${lit}|${story.phase}|${summoned ? 1 : 0}|${place}|${lamp}|${lampLit}|${story.awake ? 1 : 0}|${hidden ? 1 : 0}`
+    return `${beam}|${lit}|${story.phase}|${summoned ? 1 : 0}|${place}|${lamp}|${lampLit}|${story.awake ? 1 : 0}|${hidden ? 1 : 0}|${sheltered ? 1 : 0}|${reading ? 1 : 0}`
   }
 
   // ---- planning loop --------------------------------------------------------------------------------------------
@@ -222,7 +249,15 @@ export class MothmanHost {
     const d = Vector3.length(to)
     if (d <= arrive) { t.position = target; return true }
     const step = Math.min(d, speed * dt)
-    t.position = this.clampToScene(Vector3.add(t.position, Vector3.scale(to, step / d)))
+    const from = t.position
+    let next = keepOut(this.clampToScene(Vector3.add(from, Vector3.scale(to, step / d))), this.cabinOpen)
+    if (Vector3.distance(next, from) < step * 0.3) {
+      // pressed against a wall or a mound: slide along it instead of standing still
+      const side = Vector3.scale(Vector3.create(to.z, 0, -to.x), step / Math.max(0.01, Math.hypot(to.x, to.z)))
+      const slide = keepOut(this.clampToScene(Vector3.add(from, side)), this.cabinOpen)
+      if (Vector3.distance(slide, from) > Vector3.distance(next, from)) next = slide
+    }
+    t.position = next
     return false
   }
 
@@ -231,7 +266,7 @@ export class MothmanHost {
     let best = p, bestD = -1
     for (let i = 0; i < 10; i++) {
       const a = awayFrom === undefined ? Math.random() * Math.PI * 2 : Math.atan2(p.x - awayFrom.x, p.z - awayFrom.z) + (Math.random() - 0.5) * 1.2 + Math.PI
-      const c = this.clampToScene(Vector3.create(p.x + Math.sin(a) * dist, height, p.z + Math.cos(a) * dist))
+      const c = keepOut(this.clampToScene(Vector3.create(p.x + Math.sin(a) * dist, height, p.z + Math.cos(a) * dist)), this.cabinOpen)
       const d = Math.hypot(c.x - p.x, c.z - p.z)
       if (d > bestD) { bestD = d; best = c }
       if (d >= dist * 0.85) break
@@ -245,7 +280,7 @@ export class MothmanHost {
     const { forward } = cameraRay()
     const f = Vector3.normalize(Vector3.create(forward.x, 0, forward.z))
     const r = Vector3.create(f.z, 0, -f.x)
-    return this.clampToScene(Vector3.create(p.x + f.x * dist + r.x * side, height, p.z + f.z * dist + r.z * side))
+    return keepOut(this.clampToScene(Vector3.create(p.x + f.x * dist + r.x * side, height, p.z + f.z * dist + r.z * side)), this.cabinOpen)
   }
 
   private nearestWindow(): Vector3 {
@@ -306,6 +341,7 @@ export class MothmanHost {
         const speed = band === 'near' ? SPEEDS.approachNear : SPEEDS.approachMid
         let flapped = false
         let landing = -1
+        let spot: Vector3 | null = null // the ground point he lands on: fixed once the landing starts
         return {
           start() {
             host.airborne = true
@@ -317,13 +353,16 @@ export class MothmanHost {
             const near = host.distXZ() <= stop + 0.6 && host.inView()
             if (band === 'near' && landing < 0 && near && host.me().y < 1.25) {
               landing = 0
+              spot = host.inFront(stop, height) // from here on the camera no longer moves him
               host.body.setClip('land', true)
             }
             if (landing >= 0) landing += dt
-            const target = host.inFront(stop, height)
+            const target = spot ?? host.inFront(stop, height)
             const arrived = host.moveToward(target, host.distXZ() > bands.far + 2 ? SPEEDS.lurk : speed, dt, 0.1)
-            // Horizontal distance alone must not finish the approach while he is still above the player.
-            if (arrived && host.inView() && (band !== 'near' || (host.body.clipFinished('land') || landing >= MOTHMAN_CLIPS.land.duration + 0.25))) {
+            // Horizontal distance alone must not finish the approach while he is still above the player. Once he is
+            // landing on a fixed spot the player turning away must not keep him from finishing.
+            const landed = host.body.clipFinished('land') || landing >= MOTHMAN_CLIPS.land.duration + 0.25
+            if (arrived && (band !== 'near' ? host.inView() : landed)) {
               host.airborne = band !== 'near'
               host.setHum(host.airborne)
               host.body.setClip(host.airborne ? 'idle_fly' : 'idle_ground')
@@ -448,14 +487,31 @@ export class MothmanHost {
         let left = hold
         let tapped = false
         let landing = -1
+        let syncLeft = 0
+        let onHim = 0 // seconds the beam has been held on him through the glass
         const bulb = () => Vector3.create(layout.cabin.bulb.x, 1.6, layout.cabin.bulb.z)
+        /** Three seconds of the beam on his face through the window and he snuffs it: sparks, and five seconds dead. */
+        const snuff = (dt: number) => {
+          if (cabin.inside && flashlight.on && flashlight.dead <= 0 && beamHits(host.body.eyePos())) onHim += dt
+          else onHim = Math.max(0, onHim - dt * 2)
+          if (onHim >= 3) { onHim = 0; failLight(5, 0) }
+        }
+        /** Both lights blink while he is at the glass. Every few seconds the beam falls into step with the bulb, or out of it. */
+        const blink = (dt: number) => {
+          cabin.lampFlicker = Math.max(cabin.lampFlicker, 0.3)
+          if (!cabin.inside || !flashlight.on) return
+          flashlight.flicker = Math.max(flashlight.flicker, 0.3)
+          syncLeft -= dt
+          if (syncLeft <= 0) { flashlight.syncLamp = Math.random() < 0.5; syncLeft = 2 + Math.random() * 3 }
+        }
         return {
           start() {
             target = host.nearestWindow()
             host.setHum(true)
             const m = host.me()
             const clip = host.body.currentClip()
-            if (Math.hypot(m.x - target.x, m.z - target.z) < 0.3 && (clip === 'land' || clip === 'window_stare')) {
+            // on the spot and on the ground (a replan, or a !watch while the player read): no second landing
+            if (Math.hypot(m.x - target.x, m.z - target.z) < 0.3 && (clip === 'land' || clip === 'window_stare' || clip === 'idle_ground')) {
               there = true
               tapped = true
               host.faceAt = bulb()
@@ -470,7 +526,7 @@ export class MothmanHost {
             if (target === null) return 'running'
             if (!there) {
               const m = host.me()
-              if (Math.hypot(m.x - target.x, m.z - target.z) < 5) cabin.lampFlicker = Math.max(cabin.lampFlicker, 0.3)
+              if (Math.hypot(m.x - target.x, m.z - target.z) < 5) blink(dt)
               if (host.moveToward(target, SPEEDS.window, dt, 0.2)) {
                 there = true
                 landing = 0
@@ -487,7 +543,8 @@ export class MothmanHost {
               }
               return 'running'
             }
-            cabin.lampFlicker = Math.max(cabin.lampFlicker, 0.3)
+            blink(dt)
+            snuff(dt)
             if (landing >= 0) {
               landing += dt
               if (!host.body.clipFinished('land') && landing < MOTHMAN_CLIPS.land.duration + 0.25) return 'running'
@@ -496,9 +553,10 @@ export class MothmanHost {
               host.body.setClip('window_stare')
             }
             left -= dt
-            return left <= 0 ? 'done' : 'running'
+            if (left <= 0) { flashlight.syncLamp = false; return 'done' }
+            return 'running'
           },
-          cancel() { host.faceAt = null; host.setHum(false) }
+          cancel() { host.faceAt = null; host.setHum(false); flashlight.syncLamp = false }
         }
       }
       case '!bang': {
@@ -522,14 +580,14 @@ export class MothmanHost {
         // The door opens by itself and he comes in. Then !take.
         let stage = 0
         return {
-          start() { cabin.forceOpen = true; host.airborne = false; host.body.setClip('enter_glide'); host.faceAt = null; AudioSource.playSound(host.body.oneShot, 'assets/audio/screech.ogg') },
+          start() { cabin.forceOpen = true; host.cabinOpen = true; host.airborne = false; host.body.setClip('enter_glide'); host.faceAt = null; AudioSource.playSound(host.body.oneShot, 'assets/audio/screech.ogg') },
           update(dt) {
             const d = layout.cabin.door
             if (stage === 0) { if (host.moveToward(Vector3.create(d.x, 0.05, d.z - 1.2), 3, dt, 0.2)) stage = 1; return 'running' }
             if (stage === 1) { if (host.moveToward(Vector3.create(d.x, 0.05, d.z + 1.2), 2, dt, 0.2)) stage = 2; return 'running' }
             return 'done'
           },
-          cancel() {}
+          cancel() { host.cabinOpen = false }
         }
       }
       case '!take': {
@@ -539,6 +597,7 @@ export class MothmanHost {
           start() {
             t = 0
             host.locked = true
+            host.cabinOpen = true // he may already be inside, after !enter
             host.setHum(false)
             host.faceAt = null
             closeDocument() // a paper left open would still be up after the respawn
@@ -562,24 +621,16 @@ export class MothmanHost {
             if (t >= 7.6 && t < 7.7 && story.deaths === host.pendingDeath) {
               host.pendingDeath++
               story.deaths++
-              flashlight.wantOn = false
-              flashlight.dead = 0
-              flashlight.dying = 0
-              flashlight.litFor = 0
-              story.walkingOut = false
-              setLamp(false)
-              cabin.lampOnFor = 0
+              // The whole night starts over: lights, cabin, papers, the dog on the road, the objective, him at the roost.
+              resetGame()
+              host.locked = true // resetGame cleared nothing of this executor; keep the lock through the fade-in
               movePlayerTo({ newRelativePosition: SPAWN, cameraTarget: Vector3.create(SPAWN.x + 10, 1, SPAWN.z + 14) })
-              const perch = host.ringPoint(bands.far, 3.5)
-              Transform.getMutable(host.body.root).position = perch
-              host.airborne = true
-              host.body.setClip('idle_fly')
             }
             if (t >= 8.2) hud.black = Math.max(0, 1 - (t - 8.2) / 2.0)
-            if (t >= 10.3) { hud.black = 0; hud.deathAlpha = 0; host.locked = false; return 'done' }
+            if (t >= 10.3) { hud.black = 0; hud.deathAlpha = 0; host.locked = false; host.cabinOpen = false; return 'done' }
             return 'running'
           },
-          cancel() { host.locked = false; hud.black = 0; hud.deathAlpha = 0 }
+          cancel() { host.locked = false; host.cabinOpen = false; hud.black = 0; hud.deathAlpha = 0 }
         }
       }
       case '!speak': {
@@ -587,15 +638,36 @@ export class MothmanHost {
         // run out; then the voice. (Owner pass 5: the passage was starting over an open paper.)
         let started = false
         let quiet = 0
+        let spot: Vector3 | null = null // where he stands: a ground point chosen once, never the camera
+        let flying = false
+        const settle = () => {
+          host.airborne = false
+          flying = false
+          host.body.setClip('telepathy')
+        }
         return {
           start() {
             host.locked = true
             host.setHum(false)
-            host.airborne = false
-            host.body.setClip('telepathy')
+            // If !approach already put him down in front of the player, that is his spot. Otherwise the ground in
+            // front of where they are looking, picked now and kept: turning the camera must not drag him around.
+            const m = host.me()
+            const close = host.distXZ() <= bands.near + 1.2 && host.inView() && m.y < 1.25
+            spot = close ? Vector3.create(m.x, 0.05, m.z) : host.inFront(bands.near + 0.4, 0.05)
+            settle()
           },
           update(dt) {
-            host.moveToward(host.inFront(bands.near + 0.4, 0.05), 2.5, dt, 0.05)
+            if (spot !== null) {
+              // Walked well away from him: he comes down again in front of the player, once, on a new fixed spot.
+              if (!flying && host.distXZ() > bands.mid + 3) {
+                spot = host.inFront(bands.near + 0.4, 0.05)
+                flying = true
+                host.airborne = true
+                host.body.setClip('fly_menacing')
+                AudioSource.playSound(host.body.wings, 'assets/audio/wingbeat.ogg')
+              }
+              if (host.moveToward(spot, flying ? SPEEDS.window : 2.5, dt, 0.05) && flying) settle()
+            }
             if (!started) {
               if (docOpenFor() >= 0 || captionsPending() > 0) { quiet = 0; return 'running' }
               quiet += dt
@@ -615,6 +687,7 @@ export class MothmanHost {
               flashlight.litFor = 0
               host.locked = false
               setLoop(host.drone, false)
+              if (flashlight.on) flashlight.flicker = Math.max(flashlight.flicker, 2.5) // the beam stutters: he means it
               setObjective(...OBJECTIVES.gate)
               showCaption(CAPTIONS.getOut, 2.5, 6)
               showHint(HINTS.afterVoice, 9, 7)

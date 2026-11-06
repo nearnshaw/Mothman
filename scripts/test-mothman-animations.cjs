@@ -15,7 +15,7 @@ const ecs = { engine: { PlayerEntity: 1, addEntity: () => nextEntity++, addSyste
 for (const n of ['Transform','AudioSource','GltfContainer','GltfNodeModifiers','Animator','VisibilityComponent']) ecs[n] = component()
 ecs.AudioSource.playSound = (e, clip) => sounds.push(clip)
 ecs.Animator.playSingleAnimation = (e,n,reset) => { for(const s of ecs.Animator.getMutable(e).states) { s.playing=s.clip===n;s.shouldReset=reset } }
-const V = { create:(x=0,y=0,z=0)=>({x,y,z}), add:(a,b)=>V.create(a.x+b.x,a.y+b.y,a.z+b.z),subtract:(a,b)=>V.create(a.x-b.x,a.y-b.y,a.z-b.z),scale:(a,s)=>V.create(a.x*s,a.y*s,a.z*s), length:(a)=>Math.hypot(a.x,a.y,a.z),normalize:(a)=>V.scale(a,1/V.length(a)),dot:(a,b)=>a.x*b.x+a.y*b.y+a.z*b.z }
+const V = { create:(x=0,y=0,z=0)=>({x,y,z}), add:(a,b)=>V.create(a.x+b.x,a.y+b.y,a.z+b.z),subtract:(a,b)=>V.create(a.x-b.x,a.y-b.y,a.z-b.z),scale:(a,s)=>V.create(a.x*s,a.y*s,a.z*s), length:(a)=>Math.hypot(a.x,a.y,a.z),distance:(a,b)=>V.length(V.subtract(a,b)),normalize:(a)=>V.scale(a,1/V.length(a)),dot:(a,b)=>a.x*b.x+a.y*b.y+a.z*b.z }
 const math = {Vector3:V, Quaternion:{fromEulerDegrees:()=>({x:0,y:0,z:0,w:1})},Color3:{create:(r,g,b)=>({r,g,b})},Color4:{create:(r,g,b,a)=>({r,g,b,a})}}
 const flashlight = {on:true,litFor:0,dead:0,dying:0,flicker:0}
 const cabin = {inside:false,visits:0,windowCaptionVisit:0,lampFlicker:0}
@@ -26,7 +26,7 @@ const stubs = {
  '../../config':{bounds:{w:192,d:192},bands:{near:2.8,mid:9,far:18},roostSpot:()=>({x:20,z:20,top:7.5})},
  '../../flashlight':{flashlight,beamHits:()=>true,cameraRay:()=>({origin:V.create(20,1.6,10),forward:V.create(0,0,1)}),failLight(){}},
  '../../telepathy':{telepathy:{done:false},startTelepathy(){},hud:{},showCaption(){},showHint(){},closeDocument(){},docOpenFor:()=>-1,captionsPending:()=>0},
- '../../audio':{setLoop(){},loopSound:()=>999},'../../cabin':{cabin,setLamp(){}},'../../layout':{layout},'../../objectives':{setObjective(){}},'../../script':{CAPTIONS:{},HINTS:{},OBJECTIVES:{window:[]},DEATHS:{}}
+ '../../audio':{setLoop(){},loopSound:()=>999},'../../game':{onReset(){},resetGame(){}},'../../shelter':{insideBunker:()=>false,keepOut:v=>v,grace:()=>false},'../../cabin':{cabin,setLamp(){}},'../../layout':{layout},'../../objectives':{setObjective(){}},'../../script':{CAPTIONS:{},HINTS:{},OBJECTIVES:{window:[]},DEATHS:{}}
 }
 const cache={}
 function load(name) {

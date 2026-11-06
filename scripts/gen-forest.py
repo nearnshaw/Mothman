@@ -24,6 +24,10 @@ def component(name, schema=None):
     return comps[name]
 nodes = component('inspector::Nodes')['data']['0']['json']['value']
 names = component('core-schema::Name', NAME_SCHEMA)
+# The detailed art pass replaces individual generated parts through the live editor.
+# Rebuilding the greybox would orphan those replacements and reset the owner's edits.
+if any(v['json']['value'].startswith('Environment:') for v in names['data'].values()):
+    sys.exit('Detailed environment is installed. Edit it through Creator Hub; do not regenerate the old greybox.')
 PREFIXES = ('Forest:', 'Document:', 'Cabin:', 'Bunker:')
 old = [eid for eid, v in names['data'].items() if v['json']['value'].startswith(PREFIXES)]
 for c in comp['components']:
@@ -376,7 +380,7 @@ for i, (x, z, kind) in enumerate(placed):
 np_ = road_pt(0.03, 1.4, 0.012)
 add('Document: register', np_, (0.5, 0.75, 1), rot=quat_yx(rng.uniform(0, 360), 90), mesh=PLANE, collider=PLANEC, mask=CL_POINTER, material=pbr(1, 1, 1, rough=0.95, texture='assets/images/newspaper.png'))
 sp = road_pt(0.025, -1.8)
-add_glb('Forest: sign', 'assets/asset-packs/blank_post_sign/blank_post_sign/blank_post_sign.glb', (sp[0], 0, sp[2]), (2.2, 2.2, 2.2), rot=quat_y(road_dir(0.025) + 180), vis=0, invis=CL_PHYSICS)
+add('Forest: sign', (sp[0], 0, sp[2]), rot=quat_y(road_dir(0.025) + 180))  # an empty anchor: src/index.ts builds the post and board on it
 layout['sign'] = {'x': sp[0], 'z': sp[2]}
 json.dump(comp, open(cp, 'w'), indent=2); open(cp, 'a').write('\n')
 

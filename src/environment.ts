@@ -1,7 +1,19 @@
 import { engine, Skybox, Sun, EnvironmentFog, SkyboxTime, CameraModeArea, CameraType, Transform, ColorGradient } from '@dcl/sdk/ecs'
 import { Color4, Vector3 } from '@dcl/sdk/math'
+import { tune } from './tune'
 
 const constant = (color: Color4): ColorGradient => ({ keys: [{ time: 0, color }] })
+const scaled = (c: Color4, k: number) => Color4.create(Math.min(1, c.r * k), Math.min(1, c.g * k), Math.min(1, c.b * k), 1)
+
+// These are also the ambient light (sky-sun-fog.md): zenith -> sky, horizon -> equator, nadir -> ground. A trace of
+// blue-grey: enough to guess that something moved against the trees with the lamp off, not enough to walk by.
+const SKY = {
+  zenith: Color4.create(0.1, 0.11, 0.2, 1),
+  horizon: Color4.create(0.11, 0.115, 0.17, 1),
+  nadir: Color4.create(0.06, 0.06, 0.07, 1)
+}
+// A faintly grey fog colour reads as night mist; pure black fog is invisible in a black scene.
+const FOG = Color4.create(0.05, 0.055, 0.07, 1)
 
 /**
  * Night in the TNT area. The sky, sun and fog overrides are desktop-only (mobile and Bevy keep their sky);
@@ -9,20 +21,22 @@ const constant = (color: Color4): ColorGradient => ({ keys: [{ time: 0, color }]
  */
 export function setupNight() {
   SkyboxTime.createOrReplace(engine.RootEntity, { fixedTime: 5400 })
+  applyEnvironment()
+}
+
+/** Writes the sky, sun and fog from the base night and the preview tuning knobs (src/tune.ts). */
+export function applyEnvironment() {
   Skybox.createOrReplace(engine.RootEntity, {
     skyColors: {
-      // These are also the ambient light (sky-sun-fog.md). A trace of blue-grey: enough to guess that something
-      // moved against the trees with the lamp off, not enough to walk by.
-      zenith: constant(Color4.create(0.1, 0.11, 0.2, 1)),
-      horizon: constant(Color4.create(0.11, 0.115, 0.17, 1)),
-      nadir: constant(Color4.create(0.06, 0.06, 0.07, 1))
+      zenith: constant(scaled(SKY.zenith, tune.sky)),
+      horizon: constant(scaled(SKY.horizon, tune.sky)),
+      nadir: constant(scaled(SKY.nadir, tune.sky))
     },
     clouds: { opacity: 0 },
-    stars: { brightness: 0.5 }
+    stars: { brightness: tune.stars }
   })
-  Sun.createOrReplace(engine.RootEntity, { intensity: 0, visible: false })
-  // A faintly grey fog colour reads as night mist; pure black fog is invisible in a black scene.
-  EnvironmentFog.createOrReplace(engine.RootEntity, { color: constant(Color4.create(0.05, 0.055, 0.07, 1)), density: 0.06 })
+  Sun.createOrReplace(engine.RootEntity, { intensity: tune.sun, visible: false })
+  EnvironmentFog.createOrReplace(engine.RootEntity, { color: constant(FOG), density: tune.fog })
 }
 
 let fpArea: ReturnType<typeof engine.addEntity> | null = null

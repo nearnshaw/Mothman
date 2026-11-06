@@ -2,8 +2,9 @@ import { engine, Entity, Transform, Material, LightSource, AudioSource, pointerE
 import { Vector3, Color3, Quaternion } from '@dcl/sdk/math'
 import { layout } from './layout'
 import { setLoop, frames } from './audio'
-import { showCaption } from './telepathy'
+import { showCaption, docOpenFor } from './telepathy'
 import { CAPTIONS } from './script'
+import { onReset } from './game'
 
 /**
  * The gatehouse cabin: the one safe-looking place. Its bulb is a light like any other. Inside with the bulb on, he
@@ -28,6 +29,7 @@ let buzz: Entity
 let sfx: Entity
 let lastIntensity = -1
 let clock = 0
+let settling = 0 // frames after a reset during which the player's position is not trusted (the teleport lands)
 const LAMP = 9000
 
 export function setupCabin() {
@@ -67,6 +69,11 @@ export function setupCabin() {
     if ((hinge !== null && bulb !== null) || tries > 600) engine.removeSystem(findCabin)
   })
   engine.addSystem(cabinSystem)
+  onReset(() => {
+    setDoor(false)
+    Object.assign(cabin, { inside: false, lampOn: true, lampOnFor: 0, lampFlicker: 0, forceOpen: false, visits: 0, windowCaptionVisit: 0, warned: false })
+    settling = 30
+  })
 }
 
 export function setDoor(open: boolean) {
@@ -81,6 +88,9 @@ export function setDoor(open: boolean) {
   AudioSource.playSound(sfx, 'assets/audio/door.ogg')
 }
 
+/** The dim half of the bulb's flicker cycle: the flashlight can blink in step with it. */
+export function lampDim(): boolean { return Math.floor(clock * 3) % 2 === 1 }
+
 export function setLamp(on: boolean) {
   if (on === cabin.lampOn) return
   cabin.lampOn = on
@@ -93,7 +103,8 @@ function cabinSystem(dt: number) {
   const c = layout.cabin
   const p = Transform.get(engine.PlayerEntity).position
   const inside = Math.abs(p.x - c.x) < c.w / 2 - 0.1 && Math.abs(p.z - c.z) < c.d / 2 - 0.1 && p.y < c.h
-  if (inside !== cabin.inside) {
+  if (settling > 0) settling--
+  else if (inside !== cabin.inside) {
     cabin.inside = inside
     if (inside) {
       cabin.visits++
@@ -101,7 +112,7 @@ function cabinSystem(dt: number) {
     }
   }
   if (cabin.forceOpen) { cabin.forceOpen = false; setDoor(true) }
-  if (cabin.lampOn && inside) cabin.lampOnFor += dt
+  if (cabin.lampOn && inside && docOpenFor() < 0) cabin.lampOnFor += dt // reading under the bulb: the clock waits
   if (cabin.lampFlicker > 0) cabin.lampFlicker -= dt
   if (cabin.lampOnFor > 42 && !cabin.warned && cabin.lampOn) {
     cabin.warned = true

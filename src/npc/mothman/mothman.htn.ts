@@ -24,27 +24,85 @@ export const mothmanDomain: DomainIR = {
                 k: 'fact',
                 name: 'hidden',
                 args: [],
-                source: { file: 'mothman.domain', line: 41, col: 18, endLine: 41, endCol: 25 },
+                source: { file: 'mothman.domain', line: 43, col: 18, endLine: 43, endCol: 25 },
                 once: true
               }
             ],
-            source: { file: 'mothman.domain', line: 41, col: 14, endLine: 41, endCol: 26 }
+            source: { file: 'mothman.domain', line: 43, col: 14, endLine: 43, endCol: 26 }
           },
           tasks: [
             {
               k: 'prim',
               name: '!hide',
               args: [],
-              source: { file: 'mothman.domain', line: 42, col: 14, endLine: 42, endCol: 21 }
+              source: { file: 'mothman.domain', line: 44, col: 14, endLine: 44, endCol: 21 }
             },
             {
               k: 'prim',
               name: '!wait',
               args: [{ k: 'lit', v: { t: 'float', v: 2 } }],
-              source: { file: 'mothman.domain', line: 42, col: 22, endLine: 42, endCol: 33 }
+              source: { file: 'mothman.domain', line: 44, col: 22, endLine: 44, endCol: 33 }
             }
           ],
-          source: { file: 'mothman.domain', line: 40, col: 9, endLine: 43, endCol: 10 }
+          source: { file: 'mothman.domain', line: 42, col: 9, endLine: 45, endCol: 10 }
+        },
+        {
+          name: 'reading',
+          vars: [],
+          cond: {
+            k: 'and',
+            items: [
+              {
+                k: 'fact',
+                name: 'reading',
+                args: [],
+                source: { file: 'mothman.domain', line: 49, col: 18, endLine: 49, endCol: 26 },
+                once: true
+              }
+            ],
+            source: { file: 'mothman.domain', line: 49, col: 14, endLine: 49, endCol: 27 }
+          },
+          tasks: [
+            {
+              k: 'prim',
+              name: '!watch',
+              args: [{ k: 'lit', v: { t: 'float', v: 1 } }],
+              source: { file: 'mothman.domain', line: 50, col: 14, endLine: 50, endCol: 26 }
+            }
+          ],
+          source: { file: 'mothman.domain', line: 48, col: 9, endLine: 51, endCol: 10 }
+        },
+        {
+          name: 'sheltered',
+          vars: [],
+          cond: {
+            k: 'and',
+            items: [
+              {
+                k: 'fact',
+                name: 'sheltered',
+                args: [],
+                source: { file: 'mothman.domain', line: 55, col: 18, endLine: 55, endCol: 28 },
+                once: true
+              }
+            ],
+            source: { file: 'mothman.domain', line: 55, col: 14, endLine: 55, endCol: 29 }
+          },
+          tasks: [
+            {
+              k: 'prim',
+              name: '!lurk',
+              args: [],
+              source: { file: 'mothman.domain', line: 56, col: 14, endLine: 56, endCol: 21 }
+            },
+            {
+              k: 'prim',
+              name: '!wait',
+              args: [{ k: 'lit', v: { t: 'float', v: 5 } }],
+              source: { file: 'mothman.domain', line: 56, col: 22, endLine: 56, endCol: 33 }
+            }
+          ],
+          source: { file: 'mothman.domain', line: 54, col: 9, endLine: 57, endCol: 10 }
         },
         {
           name: 'speak',
@@ -56,27 +114,27 @@ export const mothmanDomain: DomainIR = {
                 k: 'fact',
                 name: 'summoned',
                 args: [],
-                source: { file: 'mothman.domain', line: 47, col: 18, endLine: 47, endCol: 27 },
+                source: { file: 'mothman.domain', line: 61, col: 18, endLine: 61, endCol: 27 },
                 once: true
               }
             ],
-            source: { file: 'mothman.domain', line: 47, col: 14, endLine: 47, endCol: 28 }
+            source: { file: 'mothman.domain', line: 61, col: 14, endLine: 61, endCol: 28 }
           },
           tasks: [
             {
               k: 'prim',
               name: '!approach',
               args: [{ k: 'lit', v: { t: 'sym', v: 'near' } }],
-              source: { file: 'mothman.domain', line: 48, col: 14, endLine: 48, endCol: 30 }
+              source: { file: 'mothman.domain', line: 62, col: 14, endLine: 62, endCol: 30 }
             },
             {
               k: 'prim',
               name: '!speak',
               args: [],
-              source: { file: 'mothman.domain', line: 48, col: 31, endLine: 48, endCol: 39 }
+              source: { file: 'mothman.domain', line: 62, col: 31, endLine: 62, endCol: 39 }
             }
           ],
-          source: { file: 'mothman.domain', line: 46, col: 9, endLine: 49, endCol: 10 }
+          source: { file: 'mothman.domain', line: 60, col: 9, endLine: 63, endCol: 10 }
         },
         {
           name: 'dormant',
@@ -88,21 +146,21 @@ export const mothmanDomain: DomainIR = {
                 k: 'fact',
                 name: 'dormant',
                 args: [],
-                source: { file: 'mothman.domain', line: 53, col: 18, endLine: 53, endCol: 26 },
+                source: { file: 'mothman.domain', line: 67, col: 18, endLine: 67, endCol: 26 },
                 once: true
               }
             ],
-            source: { file: 'mothman.domain', line: 53, col: 14, endLine: 53, endCol: 27 }
+            source: { file: 'mothman.domain', line: 67, col: 14, endLine: 67, endCol: 27 }
           },
           tasks: [
             {
               k: 'prim',
               name: '!wait',
               args: [{ k: 'lit', v: { t: 'float', v: 3 } }],
-              source: { file: 'mothman.domain', line: 54, col: 14, endLine: 54, endCol: 25 }
+              source: { file: 'mothman.domain', line: 68, col: 14, endLine: 68, endCol: 25 }
             }
           ],
-          source: { file: 'mothman.domain', line: 52, col: 9, endLine: 55, endCol: 10 }
+          source: { file: 'mothman.domain', line: 66, col: 9, endLine: 69, endCol: 10 }
         },
         {
           name: 'break_in',
@@ -114,41 +172,41 @@ export const mothmanDomain: DomainIR = {
                 k: 'fact',
                 name: 'place',
                 args: [{ k: 'lit', v: { t: 'sym', v: 'cabin' } }],
-                source: { file: 'mothman.domain', line: 60, col: 18, endLine: 60, endCol: 30 },
+                source: { file: 'mothman.domain', line: 74, col: 18, endLine: 74, endCol: 30 },
                 once: true
               },
               {
                 k: 'fact',
                 name: 'lamp',
                 args: [{ k: 'lit', v: { t: 'sym', v: 'on' } }],
-                source: { file: 'mothman.domain', line: 60, col: 32, endLine: 60, endCol: 40 },
+                source: { file: 'mothman.domain', line: 74, col: 32, endLine: 74, endCol: 40 },
                 once: true
               },
               {
                 k: 'fact',
                 name: 'lamp_lit',
                 args: [{ k: 'lit', v: { t: 'sym', v: 'spent' } }],
-                source: { file: 'mothman.domain', line: 60, col: 42, endLine: 60, endCol: 57 },
+                source: { file: 'mothman.domain', line: 74, col: 42, endLine: 74, endCol: 57 },
                 once: true
               }
             ],
-            source: { file: 'mothman.domain', line: 60, col: 14, endLine: 60, endCol: 58 }
+            source: { file: 'mothman.domain', line: 74, col: 14, endLine: 74, endCol: 58 }
           },
           tasks: [
             {
               k: 'prim',
               name: '!enter',
               args: [],
-              source: { file: 'mothman.domain', line: 61, col: 14, endLine: 61, endCol: 22 }
+              source: { file: 'mothman.domain', line: 75, col: 14, endLine: 75, endCol: 22 }
             },
             {
               k: 'prim',
               name: '!take',
               args: [],
-              source: { file: 'mothman.domain', line: 61, col: 23, endLine: 61, endCol: 30 }
+              source: { file: 'mothman.domain', line: 75, col: 23, endLine: 75, endCol: 30 }
             }
           ],
-          source: { file: 'mothman.domain', line: 59, col: 9, endLine: 62, endCol: 10 }
+          source: { file: 'mothman.domain', line: 73, col: 9, endLine: 76, endCol: 10 }
         },
         {
           name: 'haunt',
@@ -160,53 +218,53 @@ export const mothmanDomain: DomainIR = {
                 k: 'fact',
                 name: 'place',
                 args: [{ k: 'lit', v: { t: 'sym', v: 'cabin' } }],
-                source: { file: 'mothman.domain', line: 66, col: 18, endLine: 66, endCol: 30 },
+                source: { file: 'mothman.domain', line: 80, col: 18, endLine: 80, endCol: 30 },
                 once: true
               },
               {
                 k: 'fact',
                 name: 'lamp',
                 args: [{ k: 'lit', v: { t: 'sym', v: 'on' } }],
-                source: { file: 'mothman.domain', line: 66, col: 32, endLine: 66, endCol: 40 },
+                source: { file: 'mothman.domain', line: 80, col: 32, endLine: 80, endCol: 40 },
                 once: true
               },
               {
                 k: 'fact',
                 name: 'lamp_lit',
                 args: [{ k: 'lit', v: { t: 'sym', v: 'long' } }],
-                source: { file: 'mothman.domain', line: 66, col: 42, endLine: 66, endCol: 56 },
+                source: { file: 'mothman.domain', line: 80, col: 42, endLine: 80, endCol: 56 },
                 once: true
               }
             ],
-            source: { file: 'mothman.domain', line: 66, col: 14, endLine: 66, endCol: 57 }
+            source: { file: 'mothman.domain', line: 80, col: 14, endLine: 80, endCol: 57 }
           },
           tasks: [
             {
               k: 'prim',
               name: '!window',
               args: [{ k: 'lit', v: { t: 'float', v: 6 } }],
-              source: { file: 'mothman.domain', line: 67, col: 14, endLine: 67, endCol: 27 }
+              source: { file: 'mothman.domain', line: 81, col: 14, endLine: 81, endCol: 27 }
             },
             {
               k: 'prim',
               name: '!bang',
               args: [],
-              source: { file: 'mothman.domain', line: 67, col: 28, endLine: 67, endCol: 35 }
+              source: { file: 'mothman.domain', line: 81, col: 28, endLine: 81, endCol: 35 }
             },
             {
               k: 'prim',
               name: '!window',
               args: [{ k: 'lit', v: { t: 'float', v: 7 } }],
-              source: { file: 'mothman.domain', line: 67, col: 36, endLine: 67, endCol: 49 }
+              source: { file: 'mothman.domain', line: 81, col: 36, endLine: 81, endCol: 49 }
             },
             {
               k: 'prim',
               name: '!wait',
               args: [{ k: 'lit', v: { t: 'float', v: 4 } }],
-              source: { file: 'mothman.domain', line: 67, col: 50, endLine: 67, endCol: 61 }
+              source: { file: 'mothman.domain', line: 81, col: 50, endLine: 81, endCol: 61 }
             }
           ],
-          source: { file: 'mothman.domain', line: 65, col: 9, endLine: 68, endCol: 10 }
+          source: { file: 'mothman.domain', line: 79, col: 9, endLine: 82, endCol: 10 }
         },
         {
           name: 'peek',
@@ -218,41 +276,41 @@ export const mothmanDomain: DomainIR = {
                 k: 'fact',
                 name: 'place',
                 args: [{ k: 'lit', v: { t: 'sym', v: 'cabin' } }],
-                source: { file: 'mothman.domain', line: 72, col: 18, endLine: 72, endCol: 30 },
+                source: { file: 'mothman.domain', line: 86, col: 18, endLine: 86, endCol: 30 },
                 once: true
               },
               {
                 k: 'fact',
                 name: 'lamp',
                 args: [{ k: 'lit', v: { t: 'sym', v: 'on' } }],
-                source: { file: 'mothman.domain', line: 72, col: 32, endLine: 72, endCol: 40 },
+                source: { file: 'mothman.domain', line: 86, col: 32, endLine: 86, endCol: 40 },
                 once: true
               },
               {
                 k: 'fact',
                 name: 'lamp_lit',
                 args: [{ k: 'lit', v: { t: 'sym', v: 'some' } }],
-                source: { file: 'mothman.domain', line: 72, col: 42, endLine: 72, endCol: 56 },
+                source: { file: 'mothman.domain', line: 86, col: 42, endLine: 86, endCol: 56 },
                 once: true
               }
             ],
-            source: { file: 'mothman.domain', line: 72, col: 14, endLine: 72, endCol: 57 }
+            source: { file: 'mothman.domain', line: 86, col: 14, endLine: 86, endCol: 57 }
           },
           tasks: [
             {
               k: 'prim',
               name: '!window',
               args: [{ k: 'lit', v: { t: 'float', v: 5 } }],
-              source: { file: 'mothman.domain', line: 73, col: 14, endLine: 73, endCol: 27 }
+              source: { file: 'mothman.domain', line: 87, col: 14, endLine: 87, endCol: 27 }
             },
             {
               k: 'prim',
               name: '!wait',
               args: [{ k: 'lit', v: { t: 'float', v: 10 } }],
-              source: { file: 'mothman.domain', line: 73, col: 28, endLine: 73, endCol: 40 }
+              source: { file: 'mothman.domain', line: 87, col: 28, endLine: 87, endCol: 40 }
             }
           ],
-          source: { file: 'mothman.domain', line: 71, col: 9, endLine: 74, endCol: 10 }
+          source: { file: 'mothman.domain', line: 85, col: 9, endLine: 88, endCol: 10 }
         },
         {
           name: 'settle',
@@ -264,34 +322,34 @@ export const mothmanDomain: DomainIR = {
                 k: 'fact',
                 name: 'place',
                 args: [{ k: 'lit', v: { t: 'sym', v: 'cabin' } }],
-                source: { file: 'mothman.domain', line: 78, col: 18, endLine: 78, endCol: 30 },
+                source: { file: 'mothman.domain', line: 92, col: 18, endLine: 92, endCol: 30 },
                 once: true
               },
               {
                 k: 'fact',
                 name: 'lamp',
                 args: [{ k: 'lit', v: { t: 'sym', v: 'on' } }],
-                source: { file: 'mothman.domain', line: 78, col: 32, endLine: 78, endCol: 40 },
+                source: { file: 'mothman.domain', line: 92, col: 32, endLine: 92, endCol: 40 },
                 once: true
               }
             ],
-            source: { file: 'mothman.domain', line: 78, col: 14, endLine: 78, endCol: 41 }
+            source: { file: 'mothman.domain', line: 92, col: 14, endLine: 92, endCol: 41 }
           },
           tasks: [
             {
               k: 'prim',
               name: '!lurk',
               args: [],
-              source: { file: 'mothman.domain', line: 79, col: 14, endLine: 79, endCol: 21 }
+              source: { file: 'mothman.domain', line: 93, col: 14, endLine: 93, endCol: 21 }
             },
             {
               k: 'prim',
               name: '!wait',
               args: [{ k: 'lit', v: { t: 'float', v: 6 } }],
-              source: { file: 'mothman.domain', line: 79, col: 22, endLine: 79, endCol: 33 }
+              source: { file: 'mothman.domain', line: 93, col: 22, endLine: 93, endCol: 33 }
             }
           ],
-          source: { file: 'mothman.domain', line: 77, col: 9, endLine: 80, endCol: 10 }
+          source: { file: 'mothman.domain', line: 91, col: 9, endLine: 94, endCol: 10 }
         },
         {
           name: 'leave_cabin',
@@ -303,40 +361,40 @@ export const mothmanDomain: DomainIR = {
                 k: 'fact',
                 name: 'place',
                 args: [{ k: 'lit', v: { t: 'sym', v: 'cabin' } }],
-                source: { file: 'mothman.domain', line: 84, col: 18, endLine: 84, endCol: 30 },
+                source: { file: 'mothman.domain', line: 98, col: 18, endLine: 98, endCol: 30 },
                 once: true
               },
               {
                 k: 'fact',
                 name: 'lamp',
                 args: [{ k: 'lit', v: { t: 'sym', v: 'off' } }],
-                source: { file: 'mothman.domain', line: 84, col: 32, endLine: 84, endCol: 41 },
+                source: { file: 'mothman.domain', line: 98, col: 32, endLine: 98, endCol: 41 },
                 once: true
               }
             ],
-            source: { file: 'mothman.domain', line: 84, col: 14, endLine: 84, endCol: 42 }
+            source: { file: 'mothman.domain', line: 98, col: 14, endLine: 98, endCol: 42 }
           },
           tasks: [
             {
               k: 'prim',
               name: '!retreat',
               args: [],
-              source: { file: 'mothman.domain', line: 85, col: 14, endLine: 85, endCol: 24 }
+              source: { file: 'mothman.domain', line: 99, col: 14, endLine: 99, endCol: 24 }
             },
             {
               k: 'prim',
               name: '!lurk',
               args: [],
-              source: { file: 'mothman.domain', line: 85, col: 25, endLine: 85, endCol: 32 }
+              source: { file: 'mothman.domain', line: 99, col: 25, endLine: 99, endCol: 32 }
             },
             {
               k: 'prim',
               name: '!wait',
               args: [{ k: 'lit', v: { t: 'float', v: 8 } }],
-              source: { file: 'mothman.domain', line: 85, col: 33, endLine: 85, endCol: 44 }
+              source: { file: 'mothman.domain', line: 99, col: 33, endLine: 99, endCol: 44 }
             }
           ],
-          source: { file: 'mothman.domain', line: 83, col: 9, endLine: 86, endCol: 10 }
+          source: { file: 'mothman.domain', line: 97, col: 9, endLine: 100, endCol: 10 }
         },
         {
           name: 'take',
@@ -348,42 +406,42 @@ export const mothmanDomain: DomainIR = {
                 k: 'fact',
                 name: 'beam',
                 args: [{ k: 'lit', v: { t: 'sym', v: 'on' } }],
-                source: { file: 'mothman.domain', line: 91, col: 18, endLine: 91, endCol: 26 },
+                source: { file: 'mothman.domain', line: 105, col: 18, endLine: 105, endCol: 26 },
                 once: true
               },
               {
                 k: 'fact',
                 name: 'dist',
                 args: [{ k: 'lit', v: { t: 'sym', v: 'near' } }],
-                source: { file: 'mothman.domain', line: 91, col: 28, endLine: 91, endCol: 38 },
+                source: { file: 'mothman.domain', line: 105, col: 28, endLine: 105, endCol: 38 },
                 once: true
               },
               {
                 k: 'fact',
                 name: 'lit',
                 args: [{ k: 'lit', v: { t: 'sym', v: 'long' } }],
-                source: { file: 'mothman.domain', line: 91, col: 40, endLine: 91, endCol: 49 },
+                source: { file: 'mothman.domain', line: 105, col: 40, endLine: 105, endCol: 49 },
                 once: true
               },
               {
                 k: 'fact',
                 name: 'scared',
                 args: [],
-                source: { file: 'mothman.domain', line: 91, col: 51, endLine: 91, endCol: 58 },
+                source: { file: 'mothman.domain', line: 105, col: 51, endLine: 105, endCol: 58 },
                 once: true
               }
             ],
-            source: { file: 'mothman.domain', line: 91, col: 14, endLine: 91, endCol: 59 }
+            source: { file: 'mothman.domain', line: 105, col: 14, endLine: 105, endCol: 59 }
           },
           tasks: [
             {
               k: 'prim',
               name: '!take',
               args: [],
-              source: { file: 'mothman.domain', line: 92, col: 14, endLine: 92, endCol: 21 }
+              source: { file: 'mothman.domain', line: 106, col: 14, endLine: 106, endCol: 21 }
             }
           ],
-          source: { file: 'mothman.domain', line: 90, col: 9, endLine: 93, endCol: 10 }
+          source: { file: 'mothman.domain', line: 104, col: 9, endLine: 107, endCol: 10 }
         },
         {
           name: 'scare',
@@ -395,47 +453,47 @@ export const mothmanDomain: DomainIR = {
                 k: 'fact',
                 name: 'beam',
                 args: [{ k: 'lit', v: { t: 'sym', v: 'on' } }],
-                source: { file: 'mothman.domain', line: 97, col: 18, endLine: 97, endCol: 26 },
+                source: { file: 'mothman.domain', line: 111, col: 18, endLine: 111, endCol: 26 },
                 once: true
               },
               {
                 k: 'fact',
                 name: 'dist',
                 args: [{ k: 'lit', v: { t: 'sym', v: 'near' } }],
-                source: { file: 'mothman.domain', line: 97, col: 28, endLine: 97, endCol: 38 },
+                source: { file: 'mothman.domain', line: 111, col: 28, endLine: 111, endCol: 38 },
                 once: true
               },
               {
                 k: 'fact',
                 name: 'lit',
                 args: [{ k: 'lit', v: { t: 'sym', v: 'long' } }],
-                source: { file: 'mothman.domain', line: 97, col: 40, endLine: 97, endCol: 49 },
+                source: { file: 'mothman.domain', line: 111, col: 40, endLine: 111, endCol: 49 },
                 once: true
               }
             ],
-            source: { file: 'mothman.domain', line: 97, col: 14, endLine: 97, endCol: 50 }
+            source: { file: 'mothman.domain', line: 111, col: 14, endLine: 111, endCol: 50 }
           },
           tasks: [
             {
               k: 'prim',
               name: '!lunge',
               args: [],
-              source: { file: 'mothman.domain', line: 98, col: 14, endLine: 98, endCol: 22 }
+              source: { file: 'mothman.domain', line: 112, col: 14, endLine: 112, endCol: 22 }
             },
             {
               k: 'prim',
               name: '!rise',
               args: [],
-              source: { file: 'mothman.domain', line: 98, col: 23, endLine: 98, endCol: 30 }
+              source: { file: 'mothman.domain', line: 112, col: 23, endLine: 112, endCol: 30 }
             },
             {
               k: 'prim',
               name: '!retreat',
               args: [],
-              source: { file: 'mothman.domain', line: 98, col: 31, endLine: 98, endCol: 41 }
+              source: { file: 'mothman.domain', line: 112, col: 31, endLine: 112, endCol: 41 }
             }
           ],
-          source: { file: 'mothman.domain', line: 96, col: 9, endLine: 99, endCol: 10 }
+          source: { file: 'mothman.domain', line: 110, col: 9, endLine: 113, endCol: 10 }
         },
         {
           name: 'flee_the_dark',
@@ -447,34 +505,34 @@ export const mothmanDomain: DomainIR = {
                 k: 'fact',
                 name: 'beam',
                 args: [{ k: 'lit', v: { t: 'sym', v: 'off' } }],
-                source: { file: 'mothman.domain', line: 103, col: 18, endLine: 103, endCol: 27 },
+                source: { file: 'mothman.domain', line: 117, col: 18, endLine: 117, endCol: 27 },
                 once: true
               },
               {
                 k: 'fact',
                 name: 'dist',
                 args: [{ k: 'lit', v: { t: 'sym', v: 'near' } }],
-                source: { file: 'mothman.domain', line: 103, col: 29, endLine: 103, endCol: 39 },
+                source: { file: 'mothman.domain', line: 117, col: 29, endLine: 117, endCol: 39 },
                 once: true
               }
             ],
-            source: { file: 'mothman.domain', line: 103, col: 14, endLine: 103, endCol: 40 }
+            source: { file: 'mothman.domain', line: 117, col: 14, endLine: 117, endCol: 40 }
           },
           tasks: [
             {
               k: 'prim',
               name: '!rise',
               args: [],
-              source: { file: 'mothman.domain', line: 104, col: 14, endLine: 104, endCol: 21 }
+              source: { file: 'mothman.domain', line: 118, col: 14, endLine: 118, endCol: 21 }
             },
             {
               k: 'prim',
               name: '!retreat',
               args: [],
-              source: { file: 'mothman.domain', line: 104, col: 22, endLine: 104, endCol: 32 }
+              source: { file: 'mothman.domain', line: 118, col: 22, endLine: 118, endCol: 32 }
             }
           ],
-          source: { file: 'mothman.domain', line: 102, col: 9, endLine: 105, endCol: 10 }
+          source: { file: 'mothman.domain', line: 116, col: 9, endLine: 119, endCol: 10 }
         },
         {
           name: 'slip_away',
@@ -486,28 +544,28 @@ export const mothmanDomain: DomainIR = {
                 k: 'fact',
                 name: 'beam',
                 args: [{ k: 'lit', v: { t: 'sym', v: 'off' } }],
-                source: { file: 'mothman.domain', line: 108, col: 18, endLine: 108, endCol: 27 },
+                source: { file: 'mothman.domain', line: 122, col: 18, endLine: 122, endCol: 27 },
                 once: true
               },
               {
                 k: 'fact',
                 name: 'dist',
                 args: [{ k: 'lit', v: { t: 'sym', v: 'mid' } }],
-                source: { file: 'mothman.domain', line: 108, col: 29, endLine: 108, endCol: 38 },
+                source: { file: 'mothman.domain', line: 122, col: 29, endLine: 122, endCol: 38 },
                 once: true
               }
             ],
-            source: { file: 'mothman.domain', line: 108, col: 14, endLine: 108, endCol: 39 }
+            source: { file: 'mothman.domain', line: 122, col: 14, endLine: 122, endCol: 39 }
           },
           tasks: [
             {
               k: 'prim',
               name: '!retreat',
               args: [],
-              source: { file: 'mothman.domain', line: 109, col: 14, endLine: 109, endCol: 24 }
+              source: { file: 'mothman.domain', line: 123, col: 14, endLine: 123, endCol: 24 }
             }
           ],
-          source: { file: 'mothman.domain', line: 107, col: 9, endLine: 110, endCol: 10 }
+          source: { file: 'mothman.domain', line: 121, col: 9, endLine: 124, endCol: 10 }
         },
         {
           name: 'lurk',
@@ -519,27 +577,27 @@ export const mothmanDomain: DomainIR = {
                 k: 'fact',
                 name: 'beam',
                 args: [{ k: 'lit', v: { t: 'sym', v: 'off' } }],
-                source: { file: 'mothman.domain', line: 114, col: 18, endLine: 114, endCol: 27 },
+                source: { file: 'mothman.domain', line: 128, col: 18, endLine: 128, endCol: 27 },
                 once: true
               }
             ],
-            source: { file: 'mothman.domain', line: 114, col: 14, endLine: 114, endCol: 28 }
+            source: { file: 'mothman.domain', line: 128, col: 14, endLine: 128, endCol: 28 }
           },
           tasks: [
             {
               k: 'prim',
               name: '!lurk',
               args: [],
-              source: { file: 'mothman.domain', line: 115, col: 14, endLine: 115, endCol: 21 }
+              source: { file: 'mothman.domain', line: 129, col: 14, endLine: 129, endCol: 21 }
             },
             {
               k: 'prim',
               name: '!wait',
               args: [{ k: 'lit', v: { t: 'float', v: 6 } }],
-              source: { file: 'mothman.domain', line: 115, col: 22, endLine: 115, endCol: 33 }
+              source: { file: 'mothman.domain', line: 129, col: 22, endLine: 129, endCol: 33 }
             }
           ],
-          source: { file: 'mothman.domain', line: 113, col: 9, endLine: 116, endCol: 10 }
+          source: { file: 'mothman.domain', line: 127, col: 9, endLine: 130, endCol: 10 }
         },
         {
           name: 'punish',
@@ -551,52 +609,52 @@ export const mothmanDomain: DomainIR = {
                 k: 'fact',
                 name: 'phase',
                 args: [{ k: 'lit', v: { t: 'sym', v: 'revealed' } }],
-                source: { file: 'mothman.domain', line: 120, col: 18, endLine: 120, endCol: 33 },
+                source: { file: 'mothman.domain', line: 134, col: 18, endLine: 134, endCol: 33 },
                 once: true
               },
               {
                 k: 'fact',
                 name: 'beam',
                 args: [{ k: 'lit', v: { t: 'sym', v: 'on' } }],
-                source: { file: 'mothman.domain', line: 120, col: 35, endLine: 120, endCol: 43 },
+                source: { file: 'mothman.domain', line: 134, col: 35, endLine: 134, endCol: 43 },
                 once: true
               }
             ],
-            source: { file: 'mothman.domain', line: 120, col: 14, endLine: 120, endCol: 44 }
+            source: { file: 'mothman.domain', line: 134, col: 14, endLine: 134, endCol: 44 }
           },
           tasks: [
             {
               k: 'prim',
               name: '!approach',
               args: [{ k: 'lit', v: { t: 'sym', v: 'mid' } }],
-              source: { file: 'mothman.domain', line: 121, col: 14, endLine: 121, endCol: 29 }
+              source: { file: 'mothman.domain', line: 135, col: 14, endLine: 135, endCol: 29 }
             },
             {
               k: 'prim',
               name: '!hover',
               args: [{ k: 'lit', v: { t: 'float', v: 4 } }],
-              source: { file: 'mothman.domain', line: 121, col: 30, endLine: 121, endCol: 42 }
+              source: { file: 'mothman.domain', line: 135, col: 30, endLine: 135, endCol: 42 }
             },
             {
               k: 'prim',
               name: '!screech',
               args: [],
-              source: { file: 'mothman.domain', line: 121, col: 43, endLine: 121, endCol: 53 }
+              source: { file: 'mothman.domain', line: 135, col: 43, endLine: 135, endCol: 53 }
             },
             {
               k: 'prim',
               name: '!approach',
               args: [{ k: 'lit', v: { t: 'sym', v: 'near' } }],
-              source: { file: 'mothman.domain', line: 121, col: 54, endLine: 121, endCol: 70 }
+              source: { file: 'mothman.domain', line: 135, col: 54, endLine: 135, endCol: 70 }
             },
             {
               k: 'prim',
               name: '!loom',
               args: [{ k: 'lit', v: { t: 'float', v: 3 } }],
-              source: { file: 'mothman.domain', line: 121, col: 71, endLine: 121, endCol: 82 }
+              source: { file: 'mothman.domain', line: 135, col: 71, endLine: 135, endCol: 82 }
             }
           ],
-          source: { file: 'mothman.domain', line: 119, col: 9, endLine: 122, endCol: 10 }
+          source: { file: 'mothman.domain', line: 133, col: 9, endLine: 136, endCol: 10 }
         },
         {
           name: 'press',
@@ -608,40 +666,40 @@ export const mothmanDomain: DomainIR = {
                 k: 'fact',
                 name: 'beam',
                 args: [{ k: 'lit', v: { t: 'sym', v: 'on' } }],
-                source: { file: 'mothman.domain', line: 126, col: 18, endLine: 126, endCol: 26 },
+                source: { file: 'mothman.domain', line: 140, col: 18, endLine: 140, endCol: 26 },
                 once: true
               },
               {
                 k: 'fact',
                 name: 'lit',
                 args: [{ k: 'lit', v: { t: 'sym', v: 'long' } }],
-                source: { file: 'mothman.domain', line: 126, col: 28, endLine: 126, endCol: 37 },
+                source: { file: 'mothman.domain', line: 140, col: 28, endLine: 140, endCol: 37 },
                 once: true
               }
             ],
-            source: { file: 'mothman.domain', line: 126, col: 14, endLine: 126, endCol: 38 }
+            source: { file: 'mothman.domain', line: 140, col: 14, endLine: 140, endCol: 38 }
           },
           tasks: [
             {
               k: 'prim',
               name: '!screech',
               args: [],
-              source: { file: 'mothman.domain', line: 127, col: 14, endLine: 127, endCol: 24 }
+              source: { file: 'mothman.domain', line: 141, col: 14, endLine: 141, endCol: 24 }
             },
             {
               k: 'prim',
               name: '!approach',
               args: [{ k: 'lit', v: { t: 'sym', v: 'near' } }],
-              source: { file: 'mothman.domain', line: 127, col: 25, endLine: 127, endCol: 41 }
+              source: { file: 'mothman.domain', line: 141, col: 25, endLine: 141, endCol: 41 }
             },
             {
               k: 'prim',
               name: '!loom',
               args: [{ k: 'lit', v: { t: 'float', v: 3 } }],
-              source: { file: 'mothman.domain', line: 127, col: 42, endLine: 127, endCol: 53 }
+              source: { file: 'mothman.domain', line: 141, col: 42, endLine: 141, endCol: 53 }
             }
           ],
-          source: { file: 'mothman.domain', line: 125, col: 9, endLine: 128, endCol: 10 }
+          source: { file: 'mothman.domain', line: 139, col: 9, endLine: 142, endCol: 10 }
         },
         {
           name: 'stalk',
@@ -653,58 +711,58 @@ export const mothmanDomain: DomainIR = {
                 k: 'fact',
                 name: 'beam',
                 args: [{ k: 'lit', v: { t: 'sym', v: 'on' } }],
-                source: { file: 'mothman.domain', line: 133, col: 18, endLine: 133, endCol: 26 },
+                source: { file: 'mothman.domain', line: 147, col: 18, endLine: 147, endCol: 26 },
                 once: true
               },
               {
                 k: 'fact',
                 name: 'lit',
                 args: [{ k: 'lit', v: { t: 'sym', v: 'some' } }],
-                source: { file: 'mothman.domain', line: 133, col: 28, endLine: 133, endCol: 37 },
+                source: { file: 'mothman.domain', line: 147, col: 28, endLine: 147, endCol: 37 },
                 once: true
               }
             ],
-            source: { file: 'mothman.domain', line: 133, col: 14, endLine: 133, endCol: 38 }
+            source: { file: 'mothman.domain', line: 147, col: 14, endLine: 147, endCol: 38 }
           },
           tasks: [
             {
               k: 'prim',
               name: '!approach',
               args: [{ k: 'lit', v: { t: 'sym', v: 'mid' } }],
-              source: { file: 'mothman.domain', line: 134, col: 14, endLine: 134, endCol: 29 }
+              source: { file: 'mothman.domain', line: 148, col: 14, endLine: 148, endCol: 29 }
             },
             {
               k: 'prim',
               name: '!hover',
               args: [{ k: 'lit', v: { t: 'float', v: 7 } }],
-              source: { file: 'mothman.domain', line: 134, col: 30, endLine: 134, endCol: 42 }
+              source: { file: 'mothman.domain', line: 148, col: 30, endLine: 148, endCol: 42 }
             },
             {
               k: 'prim',
               name: '!screech',
               args: [],
-              source: { file: 'mothman.domain', line: 134, col: 43, endLine: 134, endCol: 53 }
+              source: { file: 'mothman.domain', line: 148, col: 43, endLine: 148, endCol: 53 }
             },
             {
               k: 'prim',
               name: '!retreat',
               args: [],
-              source: { file: 'mothman.domain', line: 134, col: 54, endLine: 134, endCol: 64 }
+              source: { file: 'mothman.domain', line: 148, col: 54, endLine: 148, endCol: 64 }
             },
             {
               k: 'prim',
               name: '!lurk',
               args: [],
-              source: { file: 'mothman.domain', line: 134, col: 65, endLine: 134, endCol: 72 }
+              source: { file: 'mothman.domain', line: 148, col: 65, endLine: 148, endCol: 72 }
             },
             {
               k: 'prim',
               name: '!wait',
               args: [{ k: 'lit', v: { t: 'float', v: 4 } }],
-              source: { file: 'mothman.domain', line: 134, col: 73, endLine: 134, endCol: 84 }
+              source: { file: 'mothman.domain', line: 148, col: 73, endLine: 148, endCol: 84 }
             }
           ],
-          source: { file: 'mothman.domain', line: 132, col: 9, endLine: 135, endCol: 10 }
+          source: { file: 'mothman.domain', line: 146, col: 9, endLine: 149, endCol: 10 }
         },
         {
           name: 'watch',
@@ -715,19 +773,21 @@ export const mothmanDomain: DomainIR = {
               k: 'prim',
               name: '!watch',
               args: [{ k: 'lit', v: { t: 'float', v: 1 } }],
-              source: { file: 'mothman.domain', line: 140, col: 14, endLine: 140, endCol: 26 }
+              source: { file: 'mothman.domain', line: 154, col: 14, endLine: 154, endCol: 26 }
             }
           ],
-          source: { file: 'mothman.domain', line: 138, col: 9, endLine: 141, endCol: 10 }
+          source: { file: 'mothman.domain', line: 152, col: 9, endLine: 155, endCol: 10 }
         }
       ],
-      source: { file: 'mothman.domain', line: 36, col: 5, endLine: 142, endCol: 6 }
+      source: { file: 'mothman.domain', line: 38, col: 5, endLine: 156, endCol: 6 }
     }
   ],
   axioms: [],
   topLevel: { behave: { '0': 0 } },
   facts: [
     'hidden/0',
+    'reading/0',
+    'sheltered/0',
     'summoned/0',
     'dormant/0',
     'place/1',

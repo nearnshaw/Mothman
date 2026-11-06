@@ -17,8 +17,8 @@
     "predeploy": "npm run htn:generate && npm run htn:notices"
   },
   "devDependencies": {
-    "@dcl/js-runtime": "7.32.0",
-    "@dcl/sdk": "latest"
+    "@dcl/js-runtime": "7.33.0",
+    "@dcl/sdk": "7.33.0"
   },
   "engines": {
     "node": ">=16.0.0",

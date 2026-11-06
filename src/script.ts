@@ -24,7 +24,7 @@ export const OPENING = {
 }
 
 export const HINTS = {
-  flashlight: 'Press  F  to turn on your flashlight', // shown until the first F
+  flashlight: 'F  —  flashlight on and off', // shown until the first F
   use: 'E  —  read what you find, open doors, etc',
   graphics: 'No flashlight? Raise graphics quality above Low.',
   stutter: 'Not a battery problem. The light only fails when it is near.',
@@ -92,7 +92,19 @@ export const VOICE = [
  * `reach` is how close you must be, in metres (default 4); `remove` takes the prop away once read (the collar).
  * Texts draw on the public record (design/lore.md). Your dog is Duke; Bandit is Newell Partridge's, from the record.
  */
-export type Page = { hover: string; text: string; remove?: boolean; reach?: number; after?: string[] }
+export type Page = {
+  hover: string
+  text: string
+  /** How the page is drawn: `typed` on aged paper in a typewriter face (newsprint, forms, stencils), `hand` in pen
+   *  on a notebook leaf, `look` for what is in front of you rather than written (a dark panel, no paper). */
+  style?: 'typed' | 'hand' | 'look'
+  /** Something written by hand on the page, under the text: ballpoint by default, or pencil. */
+  note?: string
+  ink?: 'ballpoint' | 'pencil'
+  remove?: boolean
+  reach?: number
+  after?: string[]
+}
 
 export function stencil(n: number): string {
   return `STORAGE BUNKER No. ${n}\nWEST VIRGINIA ORDNANCE WORKS\n\nT.N.T. — HIGH EXPLOSIVE\nCAPACITY 250 TONS\n\nNO FLAME. NO SMOKING. NO OPEN LIGHT.\n\nU.S. ARMY ORDNANCE DEPT. 1943`
@@ -100,7 +112,7 @@ export function stencil(n: number): string {
 
 export const PAGES: Record<string, Page> = {
   register: {
-    hover: 'Read the paper',
+    hover: 'Read the paper', style: 'typed',
     text:
       'POINT PLEASANT REGISTER — Wednesday, November 16, 1966\n\n' +
       'COUPLES SEE MAN-SIZED BIRD... CREATURE... SOMETHING\n\n' +
@@ -109,59 +121,56 @@ export const PAGES: Record<string, Page> = {
       'Several residents on Route 62 report television sets going dark at about the same hour, with a high whine from the set. Two farms report dogs missing.'
   },
   map: {
-    hover: 'Read the plant map',
+    hover: 'Read the plant map', style: 'typed', note: 'bunker 7 — the big one — lights fail here',
     text:
       'WEST VIRGINIA ORDNANCE WORKS — T.N.T. (EXPLOSIVES) STORAGE AREA — PLANT MAP, 1944\n\n' +
       'The plant made TNT for the war, 1942 to 1945, and stored it out here in concrete rooms buried under earth: the storage bunkers, numbered 1 to 100, kept four hundred yards apart so one could blow without the rest. ' +
-      'The map shows the gatehouse (this cabin), the power house, the pond, and bunkers 5, 6 and 7 along the plant road.\n\n' +
-      'Somebody has written in ballpoint beside bunker 7:  "the big one — lights fail here."'
+      'The map shows the gatehouse (this cabin), the power house, the pond, and bunkers 5, 6 and 7 along the plant road.'
   },
   statement: {
-    hover: 'Read the statement',
+    hover: 'Read the statement', style: 'typed', ink: 'pencil',
+    note: 'Third dog this month. If it comes to the cabin, kill the bulb. The switch is by the door. Sit in the dark till it goes.',
     text:
       'MASON COUNTY SHERIFF — STATEMENT OF WITNESS\n\n' +
       'Newell Partridge, Salem, Nov. 15:\n\n' +
       '"The television set went dark and began to whine. A high note, climbing. Bandit, my hunting dog, was howling at the hay barn. ' +
-      'I put the flashlight on the barn and the eyes came back at me like bicycle reflectors, two red circles. ' +
+      'I pointed the flashlight on the barn and the eyes came back at me like bicycle reflectors, two red circles. ' +
       'The dog went after them. I called him. He never came back."\n\n' +
-      '"I should have turned the light off."\n\n' +
-      'Under it, in pencil: "Third dog this month. All three farms had a yard light burning. ' +
-      'If it comes to the cabin, kill the bulb. The switch is by the door. Sit in the dark till it goes."'
+      '"I should have turned the light off."'
   },
   notebook: {
-    hover: 'Read the notebook page',
+    hover: 'Read the notebook page', style: 'hand',
     text:
       'M. Hyre, Athens Messenger, Nov. 15:\n\n' +
-      '"Calls since Saturday: 500+. TVs going dark, whine first. Phones dead on Route 62. Cars stalling by the plant.\n\n' +
-      'EVERY sighting in a light. Headlights. A porch lamp. Partridge\'s flashlight. Nobody has seen it in the dark. Nobody has looked.\n\n' +
-      'Hal says a dog was found on the plant road Monday and was gone by the time he got back with the truck. Third dog this month.\n\n' +
-      'The bunkers. Check the bunkers."'
+      'Calls since Saturday: 500+. TVs going dark, whine first. Phones dead on Route 62. Cars stalling by the plant.\n\n' +
+      'EVERY sighting involved a light. Headlights. A porch lamp. Partridge\'s flashlight.\n\n' +
+      'Hal says a dog was found on the plant road Monday and was gone by the time he got back with the truck. Fourth dog this month.\n\n'
   },
-  notice5: { hover: 'Read the stencil', text: stencil(5), after: ['A storage bunker: a concrete room under a hill of earth, where the plant kept its finished TNT.', 'The steel door hangs open. The floor inside is grey with something.'] },
-  notice6: { hover: 'Read the stencil', text: stencil(6), after: ['The door has been forced from the outside. The frame is bent.', 'Dog prints in the dirt at the step, going in. None coming out.'] },
-  notice7: { hover: 'Read the stencil', text: stencil(7), after: ['The big one, the map said. Lights fail here.', 'Duke\'s tracks come right up the step.'] },
+  notice5: { hover: 'Read the stencil', style: 'typed', text: stencil(5), after: ['A storage bunker: a concrete room under a hill of earth, where the plant kept its finished TNT.', 'The steel door hangs open. The floor inside is grey with something.'] },
+  notice6: { hover: 'Read the stencil', style: 'typed', text: stencil(6), after: ['The door has been forced from the outside. The frame is bent.', 'Dog prints in the dirt at the step, going in. None coming out.'] },
+  notice7: { hover: 'Read the stencil', style: 'typed', text: stencil(7), after: ['The big one, the map said. Lights fail here.', 'Duke\'s tracks come right up the step.'] },
   tally: {
-    hover: 'Look at the marks', reach: 8,
+    hover: 'Look at the marks', reach: 8, style: 'look',
     text:
       'Scratches in the concrete, floor to ceiling, both walls, in groups of five. Thousands of them. Tens of thousands.\n\n' +
-      'The newest are sharp-edged and the dust from them is still on the floor. The oldest have been here longer than the plant has been shut.\n\n' +
+      'The newest are sharp-edged. The oldest have been here longer than the plant has been shut.\n\n' +
       'The floor is a drift of dead moths, ankle deep in the corners.',
     after: ['Something has been counting. For a very long time.', 'It counts them.']
   },
   tags: {
-    hover: 'Read the tags',
+    hover: 'Read the tags', style: 'look', ink: 'pencil',
+    note: 'Pruett, Cooper, Holstein, Thomas, McDaniel, Partridge: every one had the yard light burning. EVERY ONE. — H.',
     text:
       'Nine dog collars in a ring, each chewed through, each with its tag:\n\n' +
       'REX — PRUETT FARM, RT. 62\nSALLY — COOPER\nKING — HOLSTEIN, CAMP CONLEY RD.\nQUEENIE — THOMAS, RT. 62\nBLUE — McDANIEL\n' +
-      'TIPPY — HOLSTEIN\nBANDIT — N. PARTRIDGE, SALEM\nLADY — RT. 62, NO NAME\nMAJOR — PRUETT FARM\n\n' +
-      'Scrawled in pencil on the corner of the box, in a hurry:  "Pruett, Cooper, Holstein, Thomas, McDaniel, Partridge: every one had the yard light burning. EVERY ONE. — H."',
-    after: ['Nine dogs. Nine farms along the plant road.', 'Every one of them had a yard light burning. Somebody worked that out before you, and did not come back to say so.', 'This is not about one dog. It never was.']
+      'TIPPY — HOLSTEIN\nBANDIT — N. PARTRIDGE, SALEM\nLADY — RT. 62, NO NAME\nMAJOR — PRUETT FARM',
+    after: ['Nine dogs. Nine farms along the plant road.', 'Every one of them had a yard light burning.']
   },
   collar: {
-    hover: 'Pick up the collar', remove: true,
+    hover: 'Pick up the collar', remove: true, style: 'look',
     text:
       'Duke\'s collar, chewed through. The buckle is still done up.\n\n' +
-      'The tag reads:  DUKE  —  RT. 62  —  IF FOUND RING THE FARM',
-    after: ['It was lying on the step, in a ring of dead moths. His tracks go in. Nothing comes out.', 'Duke\'s collar. No Duke.', 'The woods behind you have gone very quiet.']
+      'The tag reads:  DUKE  —  RT. 62  —  IF FOUND CONTACT THE FARM',
+    after: ['It was lying on the step, in a ring of dead moths.', 'Duke\'s collar. No Duke.', 'The woods behind you have gone very quiet.']
   }
 }

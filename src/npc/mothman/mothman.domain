@@ -14,6 +14,8 @@
 //   (dormant)                 the player has not yet walked 55 m from the gate: he stays at the roost, unrendered
 //   (hidden)                  the collar is picked up but its page or its lines are still running: he is out of sight until they end
 //   (place woods|cabin)       whether the player is inside the gatehouse cabin
+//   (sheltered)               the player is inside a storage bunker: a safe place. He never goes in
+//   (reading)                 a page is open on the player's screen: nothing moves on them
 //   (lamp on|off)             the cabin's bulb
 //   (lamp_lit none|some|long|spent) how long the bulb has been on with the player inside
 //                             (some >= 30 s, long >= 65 s, spent >= 110 s): half a minute of quiet before he shows
@@ -40,6 +42,18 @@
         (hidden
             (and (hidden))
             ((!hide) (!wait 2.0))
+        )
+
+        // Contract: a page is up. The player gets to read it: he holds where he is (owner pass 10).
+        (reading
+            (and (reading))
+            ((!watch 1.0))
+        )
+
+        // Contract: the bunkers are safe. He never goes in; he waits in the dark outside, somewhere else each time.
+        (sheltered
+            (and (sheltered))
+            ((!lurk) (!wait 5.0))
         )
 
         // Contract: the reveal. Summoned by the collar, he comes close, stands before the player and speaks once.

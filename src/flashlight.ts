@@ -3,6 +3,10 @@ import { Vector3, Color3, Color4, Quaternion } from '@dcl/sdk/math'
 import { setLoop } from './audio'
 import { showCaption, showHint } from './telepathy'
 import { CAPTIONS, HINTS } from './script'
+import { lampDim } from './cabin'
+import { tune } from './tune'
+import { onReset } from './game'
+import { grace } from './shelter'
 
 /**
  * The one tool the player has. Toggle with F. It has no battery: it only fails when he is close (the beam
@@ -11,11 +15,12 @@ import { CAPTIONS, HINTS } from './script'
  */
 export const flashlight = {
   on: false,
-  wantOn: false,
+  wantOn: true, // on from the first frame; F toggles it
   litFor: 0, // seconds the beam has been on continuously
   litTotal: 0, // seconds on, over the whole session
   offFor: 0,
   flicker: 0, // seconds of flicker left (the Mothman is near)
+  syncLamp: false, // while flickering, blink in step with the cabin bulb instead of on the beam's own clock
   dying: 0, // seconds of whine-and-stutter before he puts it out
   dead: 0, // seconds the flashlight stays dead (punishment)
   toggles: 0,
@@ -24,11 +29,13 @@ export const flashlight = {
 }
 
 const BASE_INTENSITY = 150000
-const OUTER_ANGLE = 48
+const BASE_OUTER = 48
+const BASE_INNER = 28
 let clickEntity: Entity
 let whine: Entity
 let lastIntensity = -1
 let lastActive: boolean | null = null
+let lastAngle = BASE_OUTER
 let clock = 0
 let flickerExplained = false
 let pendingDead = 0
@@ -40,7 +47,7 @@ export function setupFlashlight() {
   const e = engine.addEntity()
   Transform.create(e, { parent: engine.CameraEntity, position: Vector3.create(0.15, -0.1, 0.55), rotation: Quaternion.Identity() })
   LightSource.create(e, {
-    type: LightSource.Type.Spot({ innerAngle: 28, outerAngle: OUTER_ANGLE }),
+    type: LightSource.Type.Spot({ innerAngle: BASE_INNER, outerAngle: BASE_OUTER }),
     color: Color3.create(1, 0.95, 0.85),
     intensity: BASE_INTENSITY,
     range: 40,
@@ -76,12 +83,19 @@ export function setupFlashlight() {
   AudioSource.create(whine, { audioClipUrl: 'assets/audio/whine.ogg', playing: false, loop: true, volume: 0.45 })
 
   engine.addSystem(flashlightSystem)
+  onReset(() => {
+    Object.assign(flashlight, { wantOn: true, litFor: 0, litTotal: 0, offFor: 0, flicker: 0, syncLamp: false, dying: 0, dead: 0, failures: 0 })
+    pendingDead = 0
+    wasDead = false
+    sparkFor = 0
+    ParticleSystem.getMutable(sparks).active = false
+  })
 }
 
-/** He puts the light out: a second and a half of whine and stutter, then dead for `seconds`. */
-export function failLight(seconds: number) {
+/** He puts the light out: `windup` seconds of whine and stutter (none for a snuff), then sparks and dead for `seconds`. */
+export function failLight(seconds: number, windup = 1.5) {
   if (!flashlight.on || flashlight.dying > 0 || flashlight.dead > 0) return
-  flashlight.dying = 1.5
+  flashlight.dying = Math.max(0.01, windup)
   pendingDead = seconds
 }
 
@@ -124,7 +138,7 @@ function flashlightSystem(dt: number) {
     else flashlight.offFor = 0
   }
   if (on) {
-    flashlight.litFor += dt
+    if (!grace()) flashlight.litFor += dt // a page up, or a bunker: the beam clock waits
     flashlight.litTotal += dt
   } else flashlight.offFor += dt
   if (flashlight.flicker > 0) flashlight.flicker -= dt
@@ -138,11 +152,13 @@ function flashlightSystem(dt: number) {
     showHint(HINTS.stutter, 6, 7)
   }
 
-  // At most 3 dips per second (photosensitivity), never fully off while flickering.
-  let intensity = BASE_INTENSITY
+  // At most 3 dips per second (photosensitivity), never fully off while flickering. In step with the cabin bulb when
+  // asked (the window visit), otherwise on the beam's own clock.
+  const base = BASE_INTENSITY * tune.beam
+  let intensity = base
   if (stuttering) {
-    const phase = Math.floor(clock * 3) % 2
-    intensity = phase === 0 ? BASE_INTENSITY : BASE_INTENSITY * 0.3
+    const dim = flashlight.syncLamp ? lampDim() : Math.floor(clock * 3) % 2 === 1
+    intensity = dim ? base * 0.3 : base
   }
   if (on !== lastActive || intensity !== lastIntensity) {
     const light = LightSource.getMutable(flashlight.entity)
@@ -150,6 +166,11 @@ function flashlightSystem(dt: number) {
     light.intensity = intensity
     lastActive = on
     lastIntensity = intensity
+  }
+  if (tune.beamAngle !== lastAngle) {
+    lastAngle = tune.beamAngle
+    const outer = Math.max(2, Math.min(170, tune.beamAngle))
+    LightSource.getMutable(flashlight.entity).type = LightSource.Type.Spot({ innerAngle: outer * (BASE_INNER / BASE_OUTER), outerAngle: outer })
   }
 }
 
@@ -167,5 +188,5 @@ export function beamHits(p: Vector3, maxDist = 22): boolean {
   const d = Vector3.length(to)
   if (d > maxDist || d < 0.01) return false
   const cos = Vector3.dot(forward, Vector3.scale(to, 1 / d))
-  return cos > Math.cos(((OUTER_ANGLE / 2 + 4) * Math.PI) / 180)
+  return cos > Math.cos(((tune.beamAngle / 2 + 4) * Math.PI) / 180)
 }

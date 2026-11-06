@@ -3,6 +3,8 @@ import { showDocument, closeDocument, docOpenFor, showCaption, captionsPending }
 import { story } from './npc/mothman/host'
 import { setObjective } from './objectives'
 import { PAGES, OBJECTIVES, Page } from './script'
+import { onReset } from './game'
+import { Vector3 } from '@dcl/sdk/math'
 
 /**
  * Things left in the woods that can be read. Each is a prop placed by scripts/gen-forest.py and named
@@ -39,6 +41,8 @@ function sayAfter(lines: string[]) {
 
 export const documents = { read: 0, total: 0 }
 let pageSound: Entity
+/** Props taken when read (the collar): sunk 50 m under their spot until the next reset. */
+const taken: Array<{ e: Entity; key: string; at: Vector3 }> = []
 
 function wire(e: Entity, key: string, counted: boolean) {
   const doc = TEXTS[key]
@@ -50,12 +54,14 @@ function wire(e: Entity, key: string, counted: boolean) {
       if (docOpenFor() >= 0) return
       if (!doc.readOnce) { doc.readOnce = true; documents.read++ }
       pendingAfter = doc.after ?? null
-      showDocument(doc.text)
+      showDocument(doc.text, doc.style ?? 'look', doc.note ?? '', doc.ink ?? 'ballpoint')
       AudioSource.playSound(pageSound, 'assets/audio/page.ogg')
       doc.onRead?.()
       if (doc.remove) {
         pointerEventsSystem.removeOnPointerDown(e)
-        engine.removeEntity(e)
+        const t = Transform.getMutable(e)
+        taken.push({ e, key, at: Vector3.clone(t.position) })
+        t.position = Vector3.add(t.position, Vector3.create(0, -50, 0))
       }
     }
   )
@@ -82,6 +88,16 @@ export function setupDocuments() {
       pending.delete(key)
     }
     if (pending.size === 0 || tries > 600) engine.removeSystem(findDocs)
+  })
+  onReset(() => {
+    pendingAfter = null
+    documents.read = 0
+    for (const doc of Object.values(TEXTS)) doc.readOnce = false
+    for (const { e, key, at } of taken) {
+      Transform.getMutable(e).position = at
+      wire(e, key, false)
+    }
+    taken.length = 0
   })
   let wasOpen = false
   engine.addSystem(() => {

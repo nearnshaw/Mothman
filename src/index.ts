@@ -1,13 +1,15 @@
-import { engine, Transform, TextShape, Font, TextAlignMode, AudioSource, InputModifier, MeshRenderer, Material } from '@dcl/sdk/ecs'
+import { engine, Transform, TextShape, Font, TextAlignMode, AudioSource, InputModifier, MeshRenderer, MeshCollider, ColliderLayer, Material, GltfContainer } from '@dcl/sdk/ecs'
 import { Vector3, Color4, Quaternion } from '@dcl/sdk/math'
 import { loadBounds, bounds, roostSpot } from './config'
 import { setupNight, forceFirstPerson } from './environment'
 import { setupFlashlight, beamHits, flashlight } from './flashlight'
 import { setupAmbience, setLoop, frames } from './audio'
-import { setupMoths } from './moths'
+import { setupMoths, resetMoths } from './moths'
+import { onReset } from './game'
 import { setupTelepathy, showCaption, showHint, hud } from './telepathy'
 import { SIGN, OPENING, HINTS, CAPTIONS, OBJECTIVES, ENDINGS } from './script'
 import { setupHud } from './hud'
+import { setupDebug } from './debug'
 import { setupDocuments } from './documents'
 import { setupCabin, cabin } from './cabin'
 import { objectiveClock, setObjective } from './objectives'
@@ -25,6 +27,7 @@ export function main() {
   setupMoths()
   setupTelepathy()
   setupHud()
+  setupDebug()
   setupDocuments()
   setupCabin()
   engine.addSystem(objectiveClock)
@@ -62,7 +65,25 @@ export function main() {
 
   deadDogBeat()
   signText()
+
+  // A death resets the night. The screen is black when this runs (host.ts, !take); the fade-in takes 2.7 s more, so the
+  // opening plays again once the gate is in view, and the objective comes back with it.
+  onReset(() => {
+    resetMoths()
+    setObjective('', '')
+    showCaption(OPENING.where, 4.5, 7)
+    showCaption(OPENING.gate, 12.5, 8)
+    showCaption(OPENING.howl, 21.5, 7)
+    openingIn = 4.5
+  })
+  engine.addSystem((dt) => {
+    if (openingIn < 0) return
+    openingIn -= dt
+    if (openingIn <= 0) setObjective(...OBJECTIVES.start)
+  })
 }
+
+let openingIn = -1
 
 /** The dog howls from bunker 7. The sound sits on the line to it, never farther than 18 m, louder as you near. */
 function howlLure() {
@@ -72,16 +93,19 @@ function howlLure() {
   Transform.create(e, { position: goal })
   AudioSource.create(e, { audioClipUrl: 'assets/audio/howl.ogg', loop: true, playing: false, volume: 0.3 })
   let lastVol = 0.3
+  let stopped = false
+  onReset(() => { stopped = false })
   engine.addSystem(function lure() {
+    if (stopped) return
     const p = Transform.get(engine.PlayerEntity).position
     const to = Vector3.subtract(goal, p)
     const d = Vector3.length(to)
     // The howl stops before you reach the roost, not when you find the collar: the dog has been dead a while
-    // (owner pass 6). The silence is the last stretch of road.
+    // (owner pass 6). The silence is the last stretch of road. A reset starts it again.
     if (story.collar || d < 36) {
-      AudioSource.getMutable(e).playing = false
+      setLoop(e, false)
       if (!story.collar) showCaption(CAPTIONS.howlStopped, 0.5, 4)
-      engine.removeSystem(lure)
+      stopped = true
       return
     }
     if (frames.n >= 2) setLoop(e, true)
@@ -100,28 +124,34 @@ function deadDogBeat() {
   let passed = false
   let seen = false
   let gone = false
+  let told = false
   let wasInside = false
   let dog = engine.getEntityOrNullByName('Forest: dead dog')
+  let home: Vector3 | null = null // where it lies; it is sunk 50 m under the road when taken, and comes back on a reset
+  onReset(() => {
+    passed = seen = gone = told = false
+    if (dog !== null && home !== null) Transform.getMutable(dog).position = home
+  })
   engine.addSystem(function dogSystem() {
     if (dog === null) dog = engine.getEntityOrNullByName('Forest: dead dog')
     if (dog === null) return
+    if (home === null) home = Vector3.clone(Transform.get(dog).position)
     const leaving = wasInside && !cabin.inside
     wasInside = cabin.inside
     if (!gone) {
       const p = Transform.get(engine.PlayerEntity).position
-      const d = Transform.get(dog).position
+      const d = home
       const dist = Vector3.distance(p, d)
       if (!seen && dist < 7 && beamHits(d)) { seen = true; showCaption(CAPTIONS.dogSeen, 0.5, 7) }
       if (dist < 3) passed = true
       if ((passed || seen) && ((dist > 8 && !beamHits(d)) || cabin.inside)) {
         gone = true
-        engine.removeEntity(dog)
-        if (!seen) engine.removeSystem(dogSystem) // never noticed it: nothing to miss
+        Transform.getMutable(dog).position = Vector3.add(home, Vector3.create(0, -50, 0))
       }
     }
-    if (gone && seen && leaving) {
+    if (gone && seen && leaving && !told) {
+      told = true
       showCaption(CAPTIONS.dogGone, 1.5, 6)
-      engine.removeSystem(dogSystem)
     }
   })
 }
@@ -134,7 +164,7 @@ function ending() {
   let t = -1
   engine.addSystem(function endSystem(dt) {
     if (story.ended) { hud.black = 1; hud.deathAlpha = 1; return } // nothing brings the world back
-    if (story.phase !== 'revealed') return
+    if (story.phase !== 'revealed') { t = -1; return }
     const p = Transform.get(engine.PlayerEntity).position
     const dHome = Math.hypot(p.x - SPAWN.x, p.z - SPAWN.z)
     if (!story.walkingOut) { if (dHome > 40) story.walkingOut = true; return }
@@ -152,21 +182,34 @@ function ending() {
   })
 }
 
-/** The post sign at the gate gets its text in code (the model is a blank board). */
+/**
+ * The post sign at the gate is built here from primitives: a post and a board, with the text on the board. The
+ * composite only places an empty anchor named 'Forest: sign' (older composites still carry the asset-pack model on
+ * it, whose back face shows a different sign: that model is dropped at start).
+ */
 function signText() {
   let tries = 0
   engine.addSystem(function findSign() {
     tries++
     const sign = engine.getEntityOrNullByName('Forest: sign')
     if (sign === null) { if (tries > 600) engine.removeSystem(findSign); return }
+    if (GltfContainer.has(sign)) GltfContainer.deleteFrom(sign)
+    Transform.getMutable(sign).scale = Vector3.One() // everything below is in metres
+    const wood = { albedoColor: Color4.create(0.3, 0.22, 0.14, 1), roughness: 0.95, metallic: 0 }
     // TextShape is unlit: white letters would glow in the dark. A pale painted board behind black letters is lit
     // by the flashlight like everything else.
+    const paint = { albedoColor: Color4.create(0.8, 0.76, 0.66, 1), roughness: 0.95, metallic: 0 }
+    const post = engine.addEntity()
+    Transform.create(post, { parent: sign, position: Vector3.create(0, 1.95, -0.09), scale: Vector3.create(0.16, 3.9, 0.16) })
+    MeshRenderer.setBox(post)
+    MeshCollider.setBox(post, ColliderLayer.CL_PHYSICS)
+    Material.setPbrMaterial(post, wood)
     const board = engine.addEntity()
-    Transform.create(board, { parent: sign, position: Vector3.create(0, 1.47, 0.045), rotation: Quaternion.fromEulerDegrees(0, 180, 0), scale: Vector3.create(0.6, 1.02, 1) })
-    MeshRenderer.setPlane(board)
-    Material.setPbrMaterial(board, { albedoColor: Color4.create(0.8, 0.76, 0.66, 1), roughness: 0.95, metallic: 0 })
+    Transform.create(board, { parent: sign, position: Vector3.create(0, 2.9, 0), scale: Vector3.create(1.4, 2.0, 0.08) })
+    MeshRenderer.setBox(board)
+    Material.setPbrMaterial(board, paint)
     const text = engine.addEntity()
-    Transform.create(text, { parent: sign, position: Vector3.create(0, 1.47, 0.06), rotation: Quaternion.fromEulerDegrees(0, 180, 0), scale: Vector3.create(0.32, 0.32, 0.32) })
+    Transform.create(text, { parent: sign, position: Vector3.create(0, 2.9, 0.045), rotation: Quaternion.fromEulerDegrees(0, 180, 0), scale: Vector3.create(0.7, 0.7, 0.7) })
     TextShape.create(text, {
       text: SIGN,
       fontSize: 1.0,

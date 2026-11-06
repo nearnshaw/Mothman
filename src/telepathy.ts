@@ -1,5 +1,6 @@
 import { engine } from '@dcl/sdk/ecs'
 import { VOICE } from './script'
+import { onReset } from './game'
 
 /** What the HUD shows. Driven here, read by hud.tsx. */
 export const hud = {
@@ -11,6 +12,9 @@ export const hud = {
   hintAlpha: 0,
   stickyHint: '' as string, // shown with a slow pulse until cleared
   doc: '',
+  docStyle: 'typed' as 'typed' | 'hand' | 'look',
+  docNote: '',
+  docInk: 'ballpoint' as 'ballpoint' | 'pencil',
   docAlpha: 0,
   docOpen: false, // a document stays open until the player closes it (E or the button)
   docOpenedAt: 0,
@@ -19,8 +23,11 @@ export const hud = {
   deathAlpha: 0
 }
 
-export function showDocument(text: string) {
+export function showDocument(text: string, style: 'typed' | 'hand' | 'look' = 'look', note = '', ink: 'ballpoint' | 'pencil' = 'ballpoint') {
   hud.doc = text
+  hud.docStyle = style
+  hud.docNote = note
+  hud.docInk = ink
   hud.docOpen = true
   hud.docOpenedAt = clock
 }
@@ -68,6 +75,11 @@ export function showHint(text: string, delay: number, hold: number) {
 }
 
 export function setupTelepathy() {
+  onReset(() => {
+    queue.length = 0
+    Object.assign(telepathy, { active: false, done: false, t: 0 })
+    Object.assign(hud, { line: '', lineAlpha: 0, caption: '', captionAlpha: 0, hint: '', hintAlpha: 0, stickyHint: '', doc: '', docOpen: false })
+  })
   engine.addSystem((dt) => {
     clock += dt
     hud.captionAlpha = 0

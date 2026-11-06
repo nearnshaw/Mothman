@@ -26,6 +26,13 @@ type Moth = {
 }
 
 export const moths = { active: 0, dropped: 0 }
+/** The litter of dropped moths goes under the ground on a reset; the pool entities are reused from there. */
+export function resetMoths() {
+  for (const e of dead) Transform.getMutable(e).position = Vector3.create(0, -5, 0)
+  deadIndex = 0
+  moths.dropped = 0
+  dropClock = 0
+}
 
 const POOL = 12
 const DEAD_POOL = 24
