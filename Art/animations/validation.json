@@ -1,0 +1,90 @@
+{
+  "door_bang": {
+    "duration": 2.4000000953674316,
+    "loop_endpoint_error": 0,
+    "channels": 177
+  },
+  "enter_glide": {
+    "duration": 2.4000000953674316,
+    "loop_endpoint_error": 0,
+    "channels": 177
+  },
+  "fly_menacing": {
+    "duration": 1.600000023841858,
+    "loop_endpoint_error": 0,
+    "channels": 177
+  },
+  "glide_retreat": {
+    "duration": 2.4000000953674316,
+    "loop_endpoint_error": 0,
+    "channels": 177
+  },
+  "ground_loom": {
+    "duration": 4.0,
+    "loop_endpoint_error": 0,
+    "channels": 177
+  },
+  "hover_menacing": {
+    "duration": 2.4000000953674316,
+    "loop_endpoint_error": 0,
+    "channels": 177
+  },
+  "idle_fly": {
+    "duration": 3.200000047683716,
+    "loop_endpoint_error": 0,
+    "channels": 177
+  },
+  "idle_fly_watch": {
+    "duration": 4.800000190734863,
+    "loop_endpoint_error": 0,
+    "channels": 177
+  },
+  "idle_ground": {
+    "duration": 4.0,
+    "loop_endpoint_error": 0,
+    "channels": 177
+  },
+  "land": {
+    "duration": 1.399999976158142,
+    "loop_endpoint_error": 0,
+    "channels": 177
+  },
+  "lunge": {
+    "duration": 1.2999999523162842,
+    "loop_endpoint_error": 0,
+    "channels": 177
+  },
+  "screech": {
+    "duration": 1.899999976158142,
+    "loop_endpoint_error": 0,
+    "channels": 177
+  },
+  "takeoff": {
+    "duration": 0.800000011920929,
+    "loop_endpoint_error": 0,
+    "channels": 177
+  },
+  "telepathy": {
+    "duration": 6.0,
+    "loop_endpoint_error": 0,
+    "channels": 177
+  },
+  "window_stare": {
+    "duration": 4.0,
+    "loop_endpoint_error": 0,
+    "channels": 177
+  },
+  "_bounds_blender": {
+    "min": [
+      -0.6667855978012085,
+      -0.4143250584602356,
+      -0.0009177578613162041
+    ],
+    "max": [
+      0.6697636842727661,
+      0.2036665380001068,
+      0.9987025260925293
+    ]
+  },
+  "_eyes_path": "Node_0/node_0/Armature/BoneRoot/Hip/MothmanEyes"
+}

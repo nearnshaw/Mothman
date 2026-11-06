@@ -1,0 +1,92 @@
+[
+  {
+    "name": "idle_fly",
+    "duration": 3.2,
+    "loop": true,
+    "description": "Relaxed hovering; four wingbeats, legs hang with bent knees and a slow sway"
+  },
+  {
+    "name": "idle_fly_watch",
+    "duration": 4.8,
+    "loop": true,
+    "description": "Hovering with a searching head tilt and six asymmetric wingbeats; legs hang loose"
+  },
+  {
+    "name": "hover_menacing",
+    "duration": 2.4,
+    "loop": true,
+    "description": "Braced hovering, five fast beats, curled claws, fixed stare; legs hang loose"
+  },
+  {
+    "name": "fly_menacing",
+    "duration": 1.6,
+    "loop": true,
+    "description": "Forward flight posture with three fast beats; host supplies travel toward the player"
+  },
+  {
+    "name": "land",
+    "duration": 1.4,
+    "loop": false,
+    "description": "Brake, lower and straighten the legs and settle; host supplies descent"
+  },
+  {
+    "name": "idle_ground",
+    "duration": 4.0,
+    "loop": true,
+    "description": "Planted feet, slow breathing and small head motion"
+  },
+  {
+    "name": "takeoff",
+    "duration": 0.8,
+    "loop": false,
+    "description": "Gather, unfold and push off, legs loosen as it lifts; host supplies ascent"
+  },
+  {
+    "name": "glide_retreat",
+    "duration": 2.4,
+    "loop": true,
+    "description": "Quiet retreating flight with trailing, loosely hanging limbs"
+  },
+  {
+    "name": "screech",
+    "duration": 1.9,
+    "loop": false,
+    "description": "Chest and head recoil, claw flare; aligned to the scream"
+  },
+  {
+    "name": "lunge",
+    "duration": 1.3,
+    "loop": false,
+    "description": "Anticipation, forward reach and threatening hold; host supplies rush"
+  },
+  {
+    "name": "ground_loom",
+    "duration": 4.0,
+    "loop": true,
+    "description": "Grounded threat with half-open wings and a lowered head"
+  },
+  {
+    "name": "telepathy",
+    "duration": 6.0,
+    "loop": true,
+    "description": "Almost motionless grounded stare, restrained breathing"
+  },
+  {
+    "name": "window_stare",
+    "duration": 4.0,
+    "loop": true,
+    "description": "Head canted toward the light with a lifted hand"
+  },
+  {
+    "name": "door_bang",
+    "duration": 2.4,
+    "loop": false,
+    "description": "Two forearm strikes, timed at 0.3 and 1.4 seconds"
+  },
+  {
+    "name": "enter_glide",
+    "duration": 2.4,
+    "loop": true,
+    "description": "Narrow silhouette and forward reach for the cabin doorway; legs trail loose"
+  }
+]

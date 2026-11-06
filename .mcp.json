@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "creator-hub": {
+      "type": "http",
+      "url": "http://127.0.0.1:49239/mcp",
+      "headers": {
+        "Authorization": "Bearer 6aa42522e0dcac8732a714611ce95f02377f471d44043fd5"
+      }
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "rest_position_error": 5.760122689935088e-07,
+  "bone_tests": {
+    "L_Wing_Base": {
+      "moving_vertices": 5776,
+      "max_displacement": 0.13865826201613965
+    },
+    "L_Wing_Mid": {
+      "moving_vertices": 4525,
+      "max_displacement": 0.1092112403052635
+    },
+    "L_Wing_Tip": {
+      "moving_vertices": 2056,
+      "max_displacement": 0.06204098804829935
+    },
+    "R_Wing_Base": {
+      "moving_vertices": 5843,
+      "max_displacement": 0.12945438790942737
+    },
+    "R_Wing_Mid": {
+      "moving_vertices": 4543,
+      "max_displacement": 0.09932016113684065
+    },
+    "R_Wing_Tip": {
+      "moving_vertices": 2228,
+      "max_displacement": 0.0563752634423813
+    }
+  },
+  "triangles": 47414
+}

@@ -1,0 +1,23 @@
+# Selected Mothman: additional views
+
+The user selected 03-the-shrouded.png (the first image displayed in chat), not 01-the-watcher.png.
+
+- 05-shrouded-side.png: side view.
+- 06-shrouded-rear.png: rear view.
+- 07-shrouded-wingbeat.png: raised, level and lowered wing poses.
+
+Generated with the built-in image generation tool using 03-the-shrouded.png as the identity reference. These are artistic modeling and animation references, not dimensionally exact orthographic drawings or a tested rig. Keep one consistent wing mesh when implementing the poses; painted views can vary in foreshortening and outline.
+
+## Exact prompts
+
+### 05-shrouded-side
+
+Use case: identity-preserve. Create an additional game creature reference image using ONLY the attached approved Mothman as the exact identity. Preserve its charcoal taupe coloring, pointed black mask-like face, large almond-shaped crimson eyes, two broad feathery antennae, layered chunky fur collar, pale chest chevron, narrow torso, long arms with three claw fingers, long legs and broad claw feet. Preserve the pair of broad rounded scalloped moth wings and their exact pale transverse bands and upper eyespot-like patches. Same stylized faceted hand-painted game art, solid opaque surfaces, no strand hair. Plain warm light-gray studio background with even light. Full body including antennae, toes and wing tips, generous margins. No redesign, no props, no environment. Single creature in a strict left side profile facing left, neutral standing pose, wings relaxed downward as in reference. Reveal the torso depth, pointed facial profile and wing attachment behind shoulders. Far limbs subtly offset for clarity. No text.
+
+### 06-shrouded-rear
+
+Use case: identity-preserve. Create an additional game creature reference image using ONLY the attached approved Mothman as the exact identity. Preserve its charcoal taupe coloring, pointed black mask-like face, large almond-shaped crimson eyes, two broad feathery antennae, layered chunky fur collar, pale chest chevron, narrow torso, long arms with three claw fingers, long legs and broad claw feet. Preserve the pair of broad rounded scalloped moth wings and their exact pale transverse bands and upper eyespot-like patches. Same stylized faceted hand-painted game art, solid opaque surfaces, no strand hair. Plain warm light-gray studio background with even light. Full body including antennae, toes and wing tips, generous margins. No redesign, no props, no environment. Single creature viewed directly from behind in neutral standing pose. Wings slightly parted to reveal a narrow strip of back and their roots behind shoulders; arms visible at sides. Infer a restrained back consistent with original anatomy and layered fur. Preserve identical wing outline and pattern. No eyes on back of head. No text.
+
+### 07-shrouded-wingbeat
+
+Use case: identity-preserve. Create an additional game creature reference image using ONLY the attached approved Mothman as the exact identity. Preserve its charcoal taupe coloring, pointed black mask-like face, large almond-shaped crimson eyes, two broad feathery antennae, layered chunky fur collar, pale chest chevron, narrow torso, long arms with three claw fingers, long legs and broad claw feet. Preserve the pair of broad rounded scalloped moth wings and their exact pale transverse bands and upper eyespot-like patches. Same stylized faceted hand-painted game art, solid opaque surfaces, no strand hair. Plain warm light-gray studio background with even light. Full body including antennae, toes and wing tips, generous margins. No redesign, no props, no environment. Wide landscape animation key-pose reference sheet, three equally spaced panels in one horizontal row, each showing this EXACT creature from the same front three-quarter camera at identical body scale. Hovering with legs slightly bent and hanging, arms relaxed, same body position in all panels. Left panel: wings swept steeply UP above head in a high V at the top of the stroke. Center panel: wings spread OUT horizontally at shoulder height at mid downstroke. Right panel: wings swept DOWN, tips below hips at bottom of stroke. Each wing is a single continuous broad moth surface rotating at its upper-back root; retain original scallops, proportions and bands in every pose. Clearly distinct wing angles; do not just change the spread of a hanging cloak. Keep all wings fully framed and panels separated with generous whitespace; no overlap, no ghost limbs or motion blur. Small labels under figures: '01 RAISED', '02 LEVEL', '03 LOWERED'. Preserve the distinctive mask-like face and chest chevron.

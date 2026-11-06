@@ -1,0 +1,9 @@
+{
+  "url": "https://github.com/decentraland/sdk7-test-scenes/tree/122a3ff2e87b7e89a6c6ea415eb140dd51716125/scenes/96,-11-htn-planner",
+  "ref": "122a3ff2e87b7e89a6c6ea415eb140dd51716125",
+  "pinned": true,
+  "localChanges": false,
+  "copied": ["src/htn-planner", "tools/htn-authoring"],
+  "installedAt": "2026-11-04",
+  "note": "Manual copy for the Mothman scene; game-owned domain lives in src/npc/mothman/."
+}

@@ -1,0 +1,143 @@
+// Mothman — behaviour, second pass.
+//
+// Strategy: he is after the light, not the player. Branches top to bottom; first whose condition holds wins.
+// Horizon: one short reaction per plan; the host replans when the plan ends or when the light, the cabin lamp or the
+// story changes. Distance and fear change through his own actions and never interrupt a plan.
+//
+// Facts, written by the host every tick (src/npc/mothman/host.ts):
+//   (beam on|off)             the player's flashlight
+//   (lit none|some|long)      how long the beam has been on continuously (some >= 18 s, long >= 45 s)
+//   (dist far|mid|near)       distance band from the player, scaled to the scene size
+//   (phase ignorant|revealed) story phase; the host writes revealed after !speak finishes
+//   (summoned)                the player picked up the dog's collar at his roost: he comes to speak, light or no light
+//   (scared)                  present once the player has survived a first lunge (the jumpscare); the next catch kills
+//   (dormant)                 the player has not yet walked 55 m from the gate: he stays at the roost, unrendered
+//   (hidden)                  the collar is picked up but its page or its lines are still running: he is out of sight until they end
+//   (place woods|cabin)       whether the player is inside the gatehouse cabin
+//   (lamp on|off)             the cabin's bulb
+//   (lamp_lit none|some|long|spent) how long the bulb has been on with the player inside
+//                             (some >= 30 s, long >= 65 s, spent >= 110 s): half a minute of quiet before he shows
+//
+// Primitives, executed by the host:
+//   (!approach ?band)  glide toward a point in front of the player until inside that band; slow
+//   (!hover ?s)        hang in the air in front of the player at mid range, swaying, wings beating, for ?s
+//   (!retreat)         glide back to the far ring                             (!rise)       straight up, like a helicopter
+//   (!lurk)            pick a new perch on the far ring in the dark          (!watch ?s)   hold still and face the player
+//   (!wait ?s)         let time pass                                          (!screech)    the scream; the beam flickers if he is near
+//   (!loom ?s)         stand near, eyes lit, beam flickering                 (!lunge)      into the player's face and away: the jumpscare
+//   (!take)            the kill: into the face, blackout, the player wakes at the gate
+//   (!speak)           the telepathic passage; ends the ignorant phase
+//   (!window ?s)       fly to the cabin window nearest him and stare in for ?s; the bulb flickers
+//   (!bang)            hit the cabin door                                     (!enter)      open the door and come inside
+//   (!hide)            glide away behind the player, beyond the far ring, eyes dark
+
+(:domain Mothman top_level_domain
+
+    (:method (behave) top_level_method
+
+        // Contract: the collar is in hand but the player is still reading, or the lines about the dog are still on screen:
+        // he is nowhere. The approach comes after (owner pass 6).
+        (hidden
+            (and (hidden))
+            ((!hide) (!wait 2.0))
+        )
+
+        // Contract: the reveal. Summoned by the collar, he comes close, stands before the player and speaks once.
+        (speak
+            (and (summoned))
+            ((!approach near) (!speak))
+        )
+
+        // Contract: the start. Nothing for the first stretch of road: no eyes in the first second (owner pass 5).
+        (dormant
+            (and (dormant))
+            ((!wait 3.0))
+        )
+
+        // --- the cabin -------------------------------------------------------------------------------------------
+        // Contract: the bulb has burned too long with someone inside: he comes in. Host writes nothing; !take ends it.
+        (break_in
+            (and (place cabin) (lamp on) (lamp_lit spent))
+            ((!enter) (!take))
+        )
+
+        // Contract: the bulb is on and he has noticed: window to window, and the door.
+        (haunt
+            (and (place cabin) (lamp on) (lamp_lit long))
+            ((!window 6.0) (!bang) (!window 7.0) (!wait 4.0))
+        )
+
+        // Contract: the bulb has burned half a minute with someone inside: first face at the glass, then a pause.
+        (peek
+            (and (place cabin) (lamp on) (lamp_lit some))
+            ((!window 5.0) (!wait 10.0))
+        )
+
+        // Contract: the player just went in. He has not noticed yet: time to feel safe and read the paper.
+        (settle
+            (and (place cabin) (lamp on))
+            ((!lurk) (!wait 6.0))
+        )
+
+        // Contract: the bulb went out: he loses the place and leaves. The lesson of the cabin.
+        (leave_cabin
+            (and (place cabin) (lamp off))
+            ((!retreat) (!lurk) (!wait 8.0))
+        )
+
+        // --- the woods -------------------------------------------------------------------------------------------
+        // Contract: caught with the light on, after a first warning: the end. Host writes scared after !lunge.
+        (take
+            (and (beam on) (dist near) (lit long) (scared))
+            ((!take))
+        )
+
+        // Contract: caught with the light on, first time: the jumpscare, then he lets you go.
+        (scare
+            (and (beam on) (dist near) (lit long))
+            ((!lunge) (!rise) (!retreat))
+        )
+
+        // Contract: the light went out while he was close: straight up and away. The "lost him" beat.
+        (flee_the_dark
+            (and (beam off) (dist near))
+            ((!rise) (!retreat))
+        )
+
+        (slip_away
+            (and (beam off) (dist mid))
+            ((!retreat))
+        )
+
+        // Contract: in the dark he waits somewhere else each time.
+        (lurk
+            (and (beam off))
+            ((!lurk) (!wait 6.0))
+        )
+
+        // Contract: after the reveal, a lit beam is answered at once: in front, hanging there, then closing.
+        (punish
+            (and (phase revealed) (beam on))
+            ((!approach mid) (!hover 4.0) (!screech) (!approach near) (!loom 3.0))
+        )
+
+        // Contract: the beam has been on a long time: he presses in.
+        (press
+            (and (beam on) (lit long))
+            ((!screech) (!approach near) (!loom 3.0))
+        )
+
+        // Contract: the beam has been on a while: he comes to mid range, hangs there where you can see him, and is
+        // gone again into the dark before you can get used to him. He turns up somewhere else next time.
+        (stalk
+            (and (beam on) (lit some))
+            ((!approach mid) (!hover 7.0) (!screech) (!retreat) (!lurk) (!wait 4.0))
+        )
+
+        // Fallback: the beam just came on. Hold and let the eyeshine do the work.
+        (watch
+            ()
+            ((!watch 1.0))
+        )
+    )
+)

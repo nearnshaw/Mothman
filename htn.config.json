@@ -1,0 +1,9 @@
+{
+  "domains": [
+    {
+      "source": "src/npc/mothman/mothman.domain",
+      "output": "src/npc/mothman/mothman.htn.ts",
+      "exportName": "mothmanDomain"
+    }
+  ]
+}

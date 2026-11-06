@@ -1,0 +1,33 @@
+{
+  "name": "mothman",
+  "version": "1.0.0",
+  "description": "Mothman: a dark forest, one flashlight. First playable.",
+  "scripts": {
+    "start": "sdk-commands start",
+    "deploy": "sdk-commands deploy",
+    "build": "sdk-commands build",
+    "upgrade-sdk": "npm install --save-dev @dcl/sdk@latest",
+    "upgrade-sdk:next": "npm install --save-dev @dcl/sdk@next",
+    "htn:compile": "node tools/htn-authoring/compiler.cjs",
+    "htn:notices": "node tools/htn-authoring/notices.mjs",
+    "htn:generate": "node tools/htn-authoring/generate.mjs",
+    "htn:watch": "node tools/htn-authoring/generate.mjs --watch",
+    "prestart": "npm run htn:generate",
+    "prebuild": "npm run htn:generate && npm run htn:notices",
+    "predeploy": "npm run htn:generate && npm run htn:notices"
+  },
+  "devDependencies": {
+    "@dcl/js-runtime": "7.32.0",
+    "@dcl/sdk": "latest"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=6.0.0"
+  },
+  "prettier": {
+    "semi": false,
+    "singleQuote": true,
+    "printWidth": 120,
+    "trailingComma": "none"
+  }
+}
