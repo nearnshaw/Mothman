@@ -70,6 +70,12 @@ Engineering companion to [gdd.md](gdd.md). Settled technical decisions and recip
 - **A gate at the start is a fact, not a timer in the executor:** `story.awake` flips on distance from the spawn (pass 9: 55 m, no timer), feeds the `dormant` fact, and the eyeshine target reads it directly so his eyes are dark whatever the branch.
 - **The beam starts 0.55 m ahead of the camera** (`flashlight.ts`), so against glass the cone's apex is already through it; sill shelves 0.8 m deep keep the player back instead of moving the lamp (which would put the avatar's head in the cone).
 
+## 2026-11-06 · Lessons from pass 10 (owner notes 8)
+
+- **A paused clock needs shorter thresholds.** Once `lampOnFor` stopped counting while a page is open, the old 30/65/110 s meant 30 s of pure idling before anything happened, and players left. Thresholds are now a named constant (`CABIN` in host.ts) so the next retune is one line.
+- **"Only eyes" is a branch, not an eyeshine tweak.** `shy` (awake, `cabin.visits === 0`, ignorant, not summoned) sits above every woods branch and runs one primitive, `!stand_off`, which keeps him at `bands.far + 6` in front of the player; the eyes target reads the same condition so the beam cannot light them to full.
+- **A lit cabin is a landmark only if it emits.** A point light inside a closed room shows nothing from outside; the beacon is a porch `LightSource` plus an emissive bulb, and emissive on the glass panes (`Material.getMutable` on the generator's `Cabin: glass F/B/L/R`), all scaled by the same flicker factor as the bulb.
+
 ## 2026-11-05 · Lessons from pass 9 (owner notes 7)
 
 - **A timer is not a gate.** `story.awake` on `clock > 110` meant that reading the first paper in the light woke him and `lit` was already `long`: he came straight to the gate. Now distance only (55 m), `flashlight.litFor = 0` at waking, and `VisibilityComponent` off on the model and the eyes while dormant (`body.setVisible`), so "not there yet" is literal rather than "dark eyes somewhere".

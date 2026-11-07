@@ -1,4 +1,12 @@
 {
   "id": "b0f74364-2820-424f-a486-6b0bc893ac9f",
-  "skipPublishWarning": false
+  "skipPublishWarning": false,
+  "deployments": {
+    "world:maximocossetti.dcl.eth:10,-3": {
+      "publishedAt": 1794020079273,
+      "deploymentHash": "bafkreif2npet524noyvale5fn4wpqialm3v64b6kjvhgtg42pscepvtpfi",
+      "parcel": "10,-3",
+      "worldName": "maximocossetti.dcl.eth"
+    }
+  }
 }

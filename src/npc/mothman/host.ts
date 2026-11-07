@@ -43,6 +43,9 @@ const SPEEDS = { approachMid: 1.7, approachNear: 1.5, hover: 2.4, retreat: 7, lu
 const SPAWN = Vector3.create(layout.spawn[0], 0.1, layout.spawn[1])
 /** Metres from the gate before he exists. The register and the sign are within 10 m; the dead dog is at 77 m. */
 const WAKE_DISTANCE = 55
+/** Seconds of bulb-on with the player inside the cabin and no page open (the page clock waits) before the window,
+ * the door, the break-in. Short: the page time no longer counts, and a player with nothing to read leaves (owner pass 10). */
+const CABIN = { some: 14, long: 40, spent: 75 }
 
 export class MothmanHost {
   readonly body: MothmanBody
@@ -121,6 +124,7 @@ export class MothmanHost {
     if (story.collar && !story.summoned && docOpenFor() < 0 && captionsPending() <= 0) story.summoned = true
     const summoned = story.summoned && story.phase === 'ignorant'
     const hidden = story.collar && !story.summoned // between the collar and the voice: out of sight, eyes dark
+    const shy = story.awake && cabin.visits === 0 && story.phase === 'ignorant' && !summoned // before the cabin: eyes in the distance, nothing more
     if (!story.awake) {
       const p = this.player()
       if (Math.hypot(p.x - SPAWN.x, p.z - SPAWN.z) > WAKE_DISTANCE || summoned) {
@@ -130,7 +134,7 @@ export class MothmanHost {
     }
     const place = cabin.inside ? 'cabin' : 'woods'
     const lamp = cabin.lampOn ? 'on' : 'off'
-    const lampLit = !cabin.lampOn || !cabin.inside ? 'none' : cabin.lampOnFor >= 110 ? 'spent' : cabin.lampOnFor >= 65 ? 'long' : cabin.lampOnFor >= 30 ? 'some' : 'none'
+    const lampLit = !cabin.lampOn || !cabin.inside ? 'none' : cabin.lampOnFor >= CABIN.spent ? 'spent' : cabin.lampOnFor >= CABIN.long ? 'long' : cabin.lampOnFor >= CABIN.some ? 'some' : 'none'
     const sheltered = insideBunker(this.player()) // a bunker: safe. He waits outside.
     const reading = docOpenFor() >= 0 // a page is up: nothing moves on the player
     if (story.phase === 'revealed' && flashlight.on && !grace()) {
@@ -155,13 +159,15 @@ export class MothmanHost {
     if (!story.awake) this.world.add('dormant')
     this.world.clear('hidden', 0)
     if (hidden) this.world.add('hidden')
+    this.world.clear('shy', 0)
+    if (shy) this.world.add('shy')
     this.world.clear('sheltered', 0)
     if (sheltered) this.world.add('sheltered')
     this.world.clear('reading', 0)
     if (reading) this.world.add('reading')
     // Replan key: only events outside his control (the lights, the place, the story). Distance and fear are facts he
     // plans with, but changes he causes himself must not interrupt a running plan.
-    return `${beam}|${lit}|${story.phase}|${summoned ? 1 : 0}|${place}|${lamp}|${lampLit}|${story.awake ? 1 : 0}|${hidden ? 1 : 0}|${sheltered ? 1 : 0}|${reading ? 1 : 0}`
+    return `${beam}|${lit}|${story.phase}|${summoned ? 1 : 0}|${place}|${lamp}|${lampLit}|${story.awake ? 1 : 0}|${hidden ? 1 : 0}|${sheltered ? 1 : 0}|${reading ? 1 : 0}|${shy ? 1 : 0}`
   }
 
   // ---- planning loop --------------------------------------------------------------------------------------------
@@ -214,7 +220,8 @@ export class MothmanHost {
     this.body.setVisible(story.awake)
     const lit = beamHits(this.body.eyePos())
     const summoned = story.summoned && story.phase === 'ignorant'
-    const target = !story.awake || (story.collar && !story.summoned) ? 0 : lit ? 7 : summoned || this.faceAt !== null ? 2.0 : story.phase === 'revealed' ? 1.4 : this.band() === 'near' ? 0.6 : 0.15
+    const shy = story.awake && cabin.visits === 0 && story.phase === 'ignorant' && !summoned
+    const target = !story.awake || (story.collar && !story.summoned) ? 0 : shy ? (flashlight.on ? 1.6 : 0.35) : lit ? 7 : summoned || this.faceAt !== null ? 2.0 : story.phase === 'revealed' ? 1.4 : this.band() === 'near' ? 0.6 : 0.15
     this.eyes += (target - this.eyes) * Math.min(1, dt * 8)
     this.body.setEyes(this.eyes)
 
@@ -464,6 +471,23 @@ export class MothmanHost {
               return 'done'
             }
             return 'running'
+          },
+          cancel() {}
+        }
+      }
+      case '!stand_off': {
+        // Before the cabin he is only ever two red points in the distance: a spot in front of the player, well beyond
+        // the far ring, re-picked when they close in. He never comes nearer (owner pass 10).
+        let left = Number(args[0] ?? 4)
+        let target: Vector3 | null = null
+        const KEEP = bands.far + 6
+        return {
+          start() { target = host.inFront(KEEP + 4, 1.6 + Math.random(), (Math.random() - 0.5) * 10); host.airborne = true; host.body.setClip('glide_retreat'); host.setHum(false) },
+          update(dt) {
+            left -= dt
+            if (host.distXZ() < KEEP) target = host.inFront(KEEP + 6, 1.6 + Math.random(), (Math.random() - 0.5) * 10)
+            if (target !== null && host.moveToward(target, SPEEDS.lurk, dt, 0.4)) { target = null; host.body.setClip('idle_fly_watch') }
+            return left <= 0 ? 'done' : 'running'
           },
           cancel() {}
         }

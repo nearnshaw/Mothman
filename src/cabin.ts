@@ -1,5 +1,5 @@
-import { engine, Entity, Transform, Material, LightSource, AudioSource, pointerEventsSystem, InputAction, Tween, EasingFunction } from '@dcl/sdk/ecs'
-import { Vector3, Color3, Quaternion } from '@dcl/sdk/math'
+import { engine, Entity, Transform, Material, MeshRenderer, LightSource, AudioSource, pointerEventsSystem, InputAction, Tween, EasingFunction } from '@dcl/sdk/ecs'
+import { Vector3, Color3, Color4, Quaternion } from '@dcl/sdk/math'
 import { layout } from './layout'
 import { setLoop, frames } from './audio'
 import { showCaption, docOpenFor } from './telepathy'
@@ -25,18 +25,31 @@ export const cabin = {
 let hinge: Entity | null = null
 let bulb: Entity | null = null
 let light: Entity
+let porch: Entity
+let porchBulb: Entity
+let glass: Entity[] = []
 let buzz: Entity
 let sfx: Entity
 let lastIntensity = -1
 let clock = 0
 let settling = 0 // frames after a reset during which the player's position is not trusted (the teleport lands)
-const LAMP = 9000
+const LAMP = 11000
+const PORCH = 2600 // the lamp over the door, on the same circuit: the beacon from the road (owner pass 10)
 
 export function setupCabin() {
   const c = layout.cabin
   light = engine.addEntity()
   Transform.create(light, { position: Vector3.create(c.bulb.x, c.bulb.y - 0.1, c.bulb.z) })
-  LightSource.create(light, { type: LightSource.Type.Point({}), color: Color3.create(1, 0.9, 0.7), intensity: LAMP, range: 11, shadow: false, active: true })
+  LightSource.create(light, { type: LightSource.Type.Point({}), color: Color3.create(1, 0.9, 0.7), intensity: LAMP, range: 15, shadow: false, active: true })
+  // The lamp over the door (the model is Cabin: lamp outside, placed by the generator): a warm point light and a bulb
+  // that glows, so the lit cabin reads from the dead dog's spot on the road, 12 m off in the dark.
+  porch = engine.addEntity()
+  Transform.create(porch, { position: Vector3.create(c.door.x + 1.1, 1.75, c.door.z - 0.5) })
+  LightSource.create(porch, { type: LightSource.Type.Point({}), color: Color3.create(1, 0.78, 0.5), intensity: PORCH, range: 16, shadow: false, active: true })
+  porchBulb = engine.addEntity()
+  Transform.create(porchBulb, { position: Vector3.create(c.door.x + 1.1, 1.82, c.door.z - 0.38), scale: Vector3.create(0.09, 0.11, 0.09) })
+  MeshRenderer.setSphere(porchBulb)
+  Material.setPbrMaterial(porchBulb, { albedoColor: Color4.create(1, 0.9, 0.7, 1), emissiveColor: Color3.create(1, 0.8, 0.55), emissiveIntensity: 5, roughness: 0.3, metallic: 0 })
   buzz = engine.addEntity()
   Transform.create(buzz, { position: Vector3.create(c.bulb.x, c.bulb.y, c.bulb.z) })
   AudioSource.create(buzz, { audioClipUrl: 'assets/audio/buzz.ogg', loop: true, playing: true, volume: 0.35 })
@@ -55,6 +68,11 @@ export function setupCabin() {
         pointerEventsSystem.onPointerDown({ entity: door, opts: { button: InputAction.IA_PRIMARY, hoverText: 'Door', maxDistance: 3.5 } }, () => setDoor(!cabin.doorOpen))
       }
     }
+    if (glass.length === 0) {
+      // the four panes glow warm while the bulb is on: lit windows are what a cabin in the dark looks like from the road
+      const panes = ['F', 'B', 'L', 'R'].map((s) => engine.getEntityOrNullByName(`Cabin: glass ${s}`))
+      if (panes.every((e) => e !== null)) glass = panes as Entity[]
+    }
     if (bulb === null) {
       const b = engine.getEntityOrNullByName('Cabin: bulb')
       const sw = engine.getEntityOrNullByName('Cabin: switch')
@@ -66,7 +84,7 @@ export function setupCabin() {
         })
       }
     }
-    if ((hinge !== null && bulb !== null) || tries > 600) engine.removeSystem(findCabin)
+    if ((hinge !== null && bulb !== null && glass.length === 4) || tries > 600) engine.removeSystem(findCabin)
   })
   engine.addSystem(cabinSystem)
   onReset(() => {
@@ -114,7 +132,7 @@ function cabinSystem(dt: number) {
   if (cabin.forceOpen) { cabin.forceOpen = false; setDoor(true) }
   if (cabin.lampOn && inside && docOpenFor() < 0) cabin.lampOnFor += dt // reading under the bulb: the clock waits
   if (cabin.lampFlicker > 0) cabin.lampFlicker -= dt
-  if (cabin.lampOnFor > 42 && !cabin.warned && cabin.lampOn) {
+  if (cabin.lampOnFor > 26 && !cabin.warned && cabin.lampOn) {
     cabin.warned = true
     showCaption(CAPTIONS.notTheDoor, 0, 6)
   }
@@ -129,6 +147,17 @@ function cabinSystem(dt: number) {
     if (bulb !== null) {
       const m = Material.getMutableOrNull(bulb)
       if (m !== null && m.material?.$case === 'pbr') m.material.pbr.emissiveIntensity = intensity > 0 ? (intensity === LAMP ? 4 : 1) : 0
+    }
+    // the porch lamp and the window panes follow the bulb, flicker included: one circuit
+    const k = intensity / LAMP
+    const pl = LightSource.getMutable(porch)
+    pl.active = k > 0
+    pl.intensity = PORCH * k
+    const pm = Material.getMutable(porchBulb)
+    if (pm.material?.$case === 'pbr') pm.material.pbr.emissiveIntensity = 5 * k
+    for (const g of glass) {
+      const gm = Material.getMutableOrNull(g)
+      if (gm !== null && gm.material?.$case === 'pbr') { gm.material.pbr.emissiveColor = Color3.create(1, 0.82, 0.55); gm.material.pbr.emissiveIntensity = 1.2 * k }
     }
     setLoop(buzz, intensity > 0)
   }

@@ -2,6 +2,9 @@
 
 Append-only, newest first. `owner call` = Nico chose; `agent call` = the agent chose alone and the line carries `[agent-decided]` where it is used.
 
+- 2026-11-06 · **Before the cabin, eyes only.** New `shy` fact until the player has been inside the cabin: he holds a spot in front of them beyond the far ring (24 m+), backs off when they close in, eyes dim red (brighter when the beam is on); no hover, scream or lunge before the gatehouse. · owner call
+- 2026-11-06 · **The cabin clock is short** now that page time does not count: window at 14 s of idle bulb time, door at 40 s, break-in at 75 s, the bulb warning at 26 s. · owner call (shorter) / agent call (14 / 40 / 75) `[agent-decided]`
+- 2026-11-06 · **The cabin can be found from the road:** a porch lamp over the door on the same circuit as the bulb, the four window panes glow warm while the bulb is on, the bulb spills to 15 m. The dead dog lies 12 m from the door, so no half-way light was needed. · owner call (guide them) / agent call (porch lamp and windows rather than a second light) `[agent-decided]`
 - 2026-11-05 · **He does not exist until 55 m up the road.** The 110 s timer is gone (reading the register in the light was enough to bring him): he wakes on distance from the gate only (or the collar, or a death), is not rendered before, and the beam clock starts at his waking. · owner call (not so fast) / agent call (55 m, beam clock reset) `[agent-decided]`
 - 2026-11-05 · **The ending stays black.** After the gate the screen goes black with the ending text and never comes back to the world. · owner call
 - 2026-11-05 · **Every word in one file:** `src/script.ts` holds the sign, the opening, the hints, the captions, the objectives, the pages, the passage, the deaths and the endings; the painted textures keep their strings in `scripts/gen-forest.py`. · owner call (I want to edit those directly) / agent call (one file) `[agent-decided]`

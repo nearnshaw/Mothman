@@ -87,7 +87,7 @@ The moths are the truth, visible from minute one, understood only after the reve
 
 He plans with an HTN (hierarchical task network): every tick the game writes what he can know as facts, and the planner picks the first branch whose condition holds and runs its steps. He replans only when something outside his control changes (the flashlight, the cabin bulb, the room the player is in, the story), never because of his own progress.
 
-**Facts he plans against:** `beam on|off`; `lit none|some|long` (continuous beam: some ≥ 18 s, long ≥ 45 s); `dist far|mid|near` (18 / 9 / 2.8 m); `place woods|cabin`; `lamp on|off` (the cabin bulb); `lamp_lit none|some|long|spent` (bulb on with the player inside: some ≥ 30 s, long ≥ 65 s, spent ≥ 110 s; owner pass 5: half a minute of quiet first); `phase ignorant|revealed`; `summoned` (Duke's collar picked up); `scared` (survived the first lunge); `dormant` (the player has not yet walked 55 m from the gate: he is not rendered and nothing happens; the beam clock starts when he wakes, so a paper read in the light at the gate counts for nothing).
+**Facts he plans against:** `beam on|off`; `lit none|some|long` (continuous beam: some ≥ 18 s, long ≥ 45 s); `dist far|mid|near` (18 / 9 / 2.8 m); `place woods|cabin`; `lamp on|off` (the cabin bulb); `lamp_lit none|some|long|spent` (bulb on with the player inside and no page open: some ≥ 14 s, long ≥ 40 s, spent ≥ 75 s; owner pass 10: the page clock waits, so the idle part is short); `phase ignorant|revealed`; `summoned` (Duke's collar picked up); `scared` (survived the first lunge); `shy` (the player has not yet been inside the cabin: eyes in the distance, nothing else); `dormant` (the player has not yet walked 55 m from the gate: he is not rendered and nothing happens; the beam clock starts when he wakes, so a paper read in the light at the gate counts for nothing).
 
 **Branches, in priority order** (first match wins):
 
@@ -96,10 +96,11 @@ He plans with an HTN (hierarchical task network): every tick the game writes wha
 | speak | summoned | approach near, speak | stands at the bunker door; waits for you to put the collar's page down; then the passage runs in your head |
 | hidden | collar in hand, its page or lines still running | hide, wait | nowhere: the roost is empty when you turn |
 | dormant | dormant | wait | nothing: the first stretch of road is yours |
-| break_in | cabin, bulb on ≥ 110 s | enter, take | the door opens by itself; blackout |
-| haunt | cabin, bulb on ≥ 65 s | window 6 s, bang, window 7 s, wait | a face at the glass, the bulb flickering, a blow on the door |
-| peek | cabin, bulb on ≥ 30 s | window 5 s, wait 10 s | eyes at the nearest window ("Something is at the window." once per visit) |
-| settle | cabin, bulb on | lurk, wait 6 s | nothing: half a minute to feel safe and read the statement |
+| shy | not yet been inside the cabin | stand off 4 s | two red points in the distance, in front of you, backing off if you close in; never nearer (owner pass 10) |
+| break_in | cabin, bulb on ≥ 75 s | enter, take | the door opens by itself; blackout |
+| haunt | cabin, bulb on ≥ 40 s | window 6 s, bang, window 7 s, wait | a face at the glass, the bulb flickering, a blow on the door |
+| peek | cabin, bulb on ≥ 14 s | window 5 s, wait 10 s | eyes at the nearest window ("Something is at the window." once per visit) |
+| settle | cabin, bulb on | lurk, wait 6 s | nothing: a short quiet to feel safe; reading the statement stops the clock |
 | leave_cabin | cabin, bulb off | retreat, lurk, wait | wings going away; silence |
 | take | beam on, near, lit long, scared | take | the kill: into the face, blackout, you wake at the gate |
 | scare | beam on, near, lit long | lunge, rise, retreat | the jumpscare, then he is gone straight up |
@@ -119,7 +120,7 @@ The hover is a sway in front of the player (never a circle around them: owner pa
 
 The owner's pass-4 note: "I need an objective. I'm initially after my lost dog, not bad, but then I should realize I'm caught in something bigger." So the objective starts small and is rewritten by what you read:
 
-1. **The gate.** *Find Duke. He ran up the plant road.* The chained plant gate behind you (you both came in under the wire), the sign (ordnance works, storage bunkers ahead, no trespassing, no entry at night), the Register's first report on the ground, paw prints on the road in the beam, the first moths, the howl far up the road. A dead dog on the road that is not yours and is gone when you look back. Nothing of him for the first 55 m.
+1. **The gate.** *Find Duke. He ran up the plant road.* The chained plant gate behind you (you both came in under the wire), the sign (ordnance works, storage bunkers ahead, no trespassing, no entry at night), the Register's first report on the ground, paw prints on the road in the beam, the first moths, the howl far up the road. A dead dog on the road that is not yours and is gone when you look back. Nothing of him for the first 55 m; then only eyes in the distance until you have been inside the cabin. The cabin shows from the dead dog's spot as a porch lamp and four lit windows.
 2. **The gatehouse.** The watchman's cabin with its bulb on: the plant map (bunkers 5, 6, 7; a ballpoint note "7, the big one, lights fail here", the bunker ringed in pen) and the sheriff's statement about Partridge's dog. Objective: *His tracks run up the plant road, toward the bunkers.* The cabin set piece (§5): window, door, break-in; lights off to leave. The chase in the woods meanwhile: eyes, the hover, the scream, the first lunge.
 3. **The bunkers.** Bunker 5: both walls scratched floor to ceiling in fives, the floor a drift of dead moths (*"It counts them."*). Bunker 6: nine chewed collars in a ring, nine farms, every one with a yard light burning (*Duke is not the first. Find out what is taking them.*). The howling stops 36 m short of bunker 7. Bunker 7: Duke's collar on the step; the lines about it run with him nowhere in sight; then he comes and speaks (§10), and a line sends you back to the gate.
 4. **The walk out.** *Get back to the gate.* The light is now a moral choice, not a tool: with it on he answers at once and puts it out; in the dark the moths go straight up through the trees. Two ending lines at the gate; the screen goes black and stays black. Other ending shapes stay in [ideas.md](ideas.md).

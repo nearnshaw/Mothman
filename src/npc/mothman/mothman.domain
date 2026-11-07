@@ -13,12 +13,13 @@
 //   (scared)                  present once the player has survived a first lunge (the jumpscare); the next catch kills
 //   (dormant)                 the player has not yet walked 55 m from the gate: he stays at the roost, unrendered
 //   (hidden)                  the collar is picked up but its page or its lines are still running: he is out of sight until they end
+//   (shy)                     the player has not been inside the cabin yet: nothing of him but eyes in the distance
 //   (place woods|cabin)       whether the player is inside the gatehouse cabin
 //   (sheltered)               the player is inside a storage bunker: a safe place. He never goes in
 //   (reading)                 a page is open on the player's screen: nothing moves on them
 //   (lamp on|off)             the cabin's bulb
 //   (lamp_lit none|some|long|spent) how long the bulb has been on with the player inside
-//                             (some >= 30 s, long >= 65 s, spent >= 110 s): half a minute of quiet before he shows
+//                             and no page open (some >= 14 s, long >= 40 s, spent >= 75 s): a short quiet before he shows
 //
 // Primitives, executed by the host:
 //   (!approach ?band)  glide toward a point in front of the player until inside that band; slow
@@ -32,6 +33,7 @@
 //   (!window ?s)       fly to the cabin window nearest him and stare in for ?s; the bulb flickers
 //   (!bang)            hit the cabin door                                     (!enter)      open the door and come inside
 //   (!hide)            glide away behind the player, beyond the far ring, eyes dark
+//   (!stand_off ?s)    hold a spot in front of the player beyond the far ring for ?s, backing off if they close in
 
 (:domain Mothman top_level_domain
 
@@ -66,6 +68,13 @@
         (dormant
             (and (dormant))
             ((!wait 3.0))
+        )
+
+        // Contract: the road before the cabin. Two red points in the distance, light or no light, and nothing else:
+        // no hover, no scream, no lunge until the player has been inside the gatehouse (owner pass 10).
+        (shy
+            (and (shy))
+            ((!stand_off 4.0))
         )
 
         // --- the cabin -------------------------------------------------------------------------------------------

@@ -161,3 +161,15 @@ Same three steps as above; density and landmarks are in `scripts/gen-forest.py`.
 - All text moved to `src/script.ts`; `documents.ts`, `telepathy.ts`, `index.ts`, `cabin.ts`, `flashlight.ts`, `host.ts`, `objectives.ts` read from it.
 
 **To check in-world:** nothing of him for the first 55 m (stand at the register with the light on for two minutes: nothing should come); the barrel under the TV; the pen note on the map; captions clear of the minimap; the ending black holds; the sparks read as sparks.
+
+## Pass 10 — owner notes 8 (2026-11-06)
+
+**Owner pass 9 (played in the Hub).** Condensed: in the cabin he now takes too long to come to the window, because page time no longer counts and the idle wait is too long; players may leave first. No fully visible apparition before the cabin, at most red eyes in the distance. Make sure players find the cabin: from the dead dog it is off in the dark; brighten the light or add a softer one half-way.
+
+**Built (not verified in-world; the Explorer MCP was unreachable; domain recompiled, type check clean, bundle carries `stand_off`, `PORCH`, the glass lookup):**
+- Cabin clock: some/long/spent at 14/40/75 s of bulb-on, inside, no page open (`CABIN` in host.ts); the bulb warning at 26 s.
+- `shy` fact and branch with the new `!stand_off` primitive; eyes target 0.35 (beam off) or 1.6 (beam on) while shy.
+- Porch lamp over the door: point light 2600, range 16, warm; an emissive bulb; the interior bulb 11000, range 15; the four window panes get emissive 1.2 while the bulb is on; all follow the switch and the flicker.
+- No half-way light: the dead dog is 12 m from the door, inside the porch lamp's range.
+
+**To check in-world:** from the dog, with the flashlight off, the porch lamp and lit windows are visible; walking the road before the cabin with the light on shows only two red points ahead that recede; inside the cabin with the statement closed the face is at the window within about 15 s; the window, the door and the break-in follow if the bulb stays on.
