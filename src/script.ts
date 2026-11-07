@@ -89,7 +89,7 @@ export const VOICE = [
 
 /**
  * The papers. `hover` is the prompt on the crosshair; `text` is the page; `after` is said once it is put down;
- * `reach` is how close you must be, in metres (default 4); `remove` takes the prop away once read (the collar).
+ * `reach` is how close you must be, in metres (default 6); `remove` takes the prop away once read (the collar).
  * Texts draw on the public record (design/lore.md). Your dog is Duke; Bandit is Newell Partridge's, from the record.
  */
 export type Page = {
@@ -151,7 +151,7 @@ export const PAGES: Record<string, Page> = {
   notice6: { hover: 'Read the stencil', style: 'typed', text: stencil(6), after: ['The door has been forced from the outside. The frame is bent.', 'Dog prints in the dirt at the step, going in. None coming out.'] },
   notice7: { hover: 'Read the stencil', style: 'typed', text: stencil(7), after: ['The big one, the map said. Lights fail here.', 'Duke\'s tracks come right up the step.'] },
   tally: {
-    hover: 'Look at the marks', reach: 8, style: 'monologue',
+    hover: 'Look at the marks', reach: 10, style: 'monologue',
     text:
       'Scratches in the concrete, floor to ceiling, both walls, in groups of five. Thousands of them. Tens of thousands.\n\n' +
       'The newest are sharp-edged. The oldest have been here longer than the plant has been shut.\n\n' +

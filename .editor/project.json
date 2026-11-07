@@ -3,8 +3,8 @@
   "skipPublishWarning": false,
   "deployments": {
     "world:maximocossetti.dcl.eth:10,-3": {
-      "publishedAt": 1794020079273,
-      "deploymentHash": "bafkreif2npet524noyvale5fn4wpqialm3v64b6kjvhgtg42pscepvtpfi",
+      "publishedAt": 1794021354299,
+      "deploymentHash": "bafkreick2ypf53dtmjfa5nfneibrudi744wrpsadwb2sq33tovtw2jaz3m",
       "parcel": "10,-3",
       "worldName": "maximocossetti.dcl.eth"
     }

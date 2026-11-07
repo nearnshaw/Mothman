@@ -269,7 +269,10 @@ add_glb('Cabin: radio', 'assets/Models/radio.glb', (1.6, 0.2 + 0.78, 1.1), (0.45
 add_glb('Cabin: barrel', 'assets/asset-packs/rum_barrel/Barrel_02/Barrel_02.glb', (-3.0, 0.2, -1.7), (0.9, 0.9, 0.9), vis=CL_PHYSICS, parent=cabin_root)
 # a 1966 wooden console set (assets/Models/cabin_tv.glb) against the left wall under the window, facing into the room
 add_glb('Cabin: tv', 'assets/Models/cabin_tv.glb', (-2.95, 0.2, -0.3), (1, 1, 1), rot=quat_y(90), vis=CL_PHYSICS, parent=cabin_root)
-add_glb('Cabin: lamp outside', 'assets/Models/lamp-exterior.glb', (1.8 + 1.1, 1.9, -CD/2 - 0.2), (0.45, 0.45, 0.45), rot=quat_y(180), vis=0, parent=cabin_root)
+# the lantern over the door (assets/Models/lamp-exterior.glb): a lantern hanging under a bracket arm whose flat +x end is the wall
+# mount (1.45 along +x from the hook). With the import mirror that end sits on local -x, and a 90 yaw turns it to +z: the bracket
+# meets the front wall face and the lantern hangs 0.58 m out from it, right of the door, below the ceiling line (owner pass 11)
+add_glb('Cabin: lamp outside', 'assets/Models/lamp-exterior.glb', (1.8 + 1.1, 1.45, -CD/2 - T/2 - 1.45 * 0.4), (0.4, 0.4, 0.4), rot=quat_y(90), vis=0, parent=cabin_root)
 # a deep sill shelf under each window: the beam starts half a metre ahead of the camera, so a player against the glass
 # saw it go dark; the shelf keeps them a step back (owner pass 5)
 for name, pos, scale in (('sill F', (-1.6, 0.47, -CD/2 + T/2 + 0.4), (1.7, 0.94, 0.8)), ('sill B', (1.0, 0.47, CD/2 - T/2 - 0.4), (1.7, 0.94, 0.8)),
@@ -355,8 +358,8 @@ layout['pond'] = {'x': pond[0], 'z': pond[1]}; layout['power'] = {'x': power[0],
 
 # ---- trees ----------------------------------------------------------------------------------------------------------------
 PINE = 'assets/asset-packs/stylized_pine_tree/stylized_pine_tree/stylized_pine_tree.glb'
-BIRCH = 'assets/asset-packs/green_birch_tree/green_birch_tree/green_birch_tree.glb'
-ABIRCH = 'assets/asset-packs/autumn_birch_tree/autumn_birch_tree/autumn_birch_tree.glb'
+BIRCH = 'assets/Models/green_birch_tree-pale-bark-v4.glb'
+ABIRCH = 'assets/Models/autumn_birch_tree-pale-bark-v4.glb'
 count = int(W*D/68); placed = []; tries = 0
 while len(placed) < count and tries < 60000:
     tries += 1

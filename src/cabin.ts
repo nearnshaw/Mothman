@@ -1,10 +1,11 @@
-import { engine, Entity, Transform, Material, MeshRenderer, LightSource, AudioSource, pointerEventsSystem, InputAction, Tween, EasingFunction } from '@dcl/sdk/ecs'
+import { engine, Entity, Transform, Material, MeshRenderer, LightSource, AudioSource, pointerEventsSystem, InputAction, Tween, EasingFunction, GltfNodeModifiers } from '@dcl/sdk/ecs'
 import { Vector3, Color3, Color4, Quaternion } from '@dcl/sdk/math'
 import { layout } from './layout'
 import { setLoop, frames } from './audio'
 import { showCaption, docOpenFor } from './telepathy'
 import { CAPTIONS } from './script'
 import { onReset } from './game'
+import { tune } from './tune'
 
 /**
  * The gatehouse cabin: the one safe-looking place. Its bulb is a light like any other. Inside with the bulb on, he
@@ -27,27 +28,33 @@ let bulb: Entity | null = null
 let light: Entity
 let porch: Entity
 let porchBulb: Entity
+let lampModel: Entity | null = null // 'Cabin: lamp outside', the lantern the generator hangs by the door
 let glass: Entity[] = []
 let buzz: Entity
 let sfx: Entity
 let lastIntensity = -1
+let lastGlass = -1 // tune.glass as last painted onto the panes
+let lastGlow = -1 // tune.glassGlow as last painted
 let clock = 0
 let settling = 0 // frames after a reset during which the player's position is not trusted (the teleport lands)
 const LAMP = 11000
 const PORCH = 2600 // the lamp over the door, on the same circuit: the beacon from the road (owner pass 10)
+/** The lantern's own base colour, pulled out of its GLB: with the circuit off it keeps its look and loses the baked-in glow. */
+const LAMP_SKIN = 'assets/Images/lamp-exterior-albedo.png'
 
 export function setupCabin() {
   const c = layout.cabin
   light = engine.addEntity()
   Transform.create(light, { position: Vector3.create(c.bulb.x, c.bulb.y - 0.1, c.bulb.z) })
   LightSource.create(light, { type: LightSource.Type.Point({}), color: Color3.create(1, 0.9, 0.7), intensity: LAMP, range: 15, shadow: false, active: true })
-  // The lamp over the door (the model is Cabin: lamp outside, placed by the generator): a warm point light and a bulb
-  // that glows, so the lit cabin reads from the dead dog's spot on the road, 12 m off in the dark.
+  // The lamp over the door (the model is Cabin: lamp outside, placed by the generator: its lantern hangs 0.67 m out from
+  // the wall plane, right of the door): a warm point light and a bulb inside the lantern, so the lit cabin reads from
+  // the dead dog's spot on the road, 12 m off in the dark.
   porch = engine.addEntity()
-  Transform.create(porch, { position: Vector3.create(c.door.x + 1.1, 1.75, c.door.z - 0.5) })
+  Transform.create(porch, { position: Vector3.create(c.door.x + 1.1, 1.9, c.door.z - 0.67) })
   LightSource.create(porch, { type: LightSource.Type.Point({}), color: Color3.create(1, 0.78, 0.5), intensity: PORCH, range: 16, shadow: false, active: true })
   porchBulb = engine.addEntity()
-  Transform.create(porchBulb, { position: Vector3.create(c.door.x + 1.1, 1.82, c.door.z - 0.38), scale: Vector3.create(0.09, 0.11, 0.09) })
+  Transform.create(porchBulb, { position: Vector3.create(c.door.x + 1.1, 1.9, c.door.z - 0.67), scale: Vector3.create(0.09, 0.11, 0.09) })
   MeshRenderer.setSphere(porchBulb)
   Material.setPbrMaterial(porchBulb, { albedoColor: Color4.create(1, 0.9, 0.7, 1), emissiveColor: Color3.create(1, 0.8, 0.55), emissiveIntensity: 5, roughness: 0.3, metallic: 0 })
   buzz = engine.addEntity()
@@ -65,7 +72,7 @@ export function setupCabin() {
       const door = engine.getEntityOrNullByName('Cabin: door')
       if (h !== null && door !== null) {
         hinge = h
-        pointerEventsSystem.onPointerDown({ entity: door, opts: { button: InputAction.IA_PRIMARY, hoverText: 'Door', maxDistance: 3.5 } }, () => setDoor(!cabin.doorOpen))
+        pointerEventsSystem.onPointerDown({ entity: door, opts: { button: InputAction.IA_PRIMARY, hoverText: 'Door', maxDistance: 5 } }, () => setDoor(!cabin.doorOpen))
       }
     }
     if (glass.length === 0) {
@@ -73,18 +80,19 @@ export function setupCabin() {
       const panes = ['F', 'B', 'L', 'R'].map((s) => engine.getEntityOrNullByName(`Cabin: glass ${s}`))
       if (panes.every((e) => e !== null)) glass = panes as Entity[]
     }
+    if (lampModel === null) lampModel = engine.getEntityOrNullByName('Cabin: lamp outside')
     if (bulb === null) {
       const b = engine.getEntityOrNullByName('Cabin: bulb')
       const sw = engine.getEntityOrNullByName('Cabin: switch')
       if (b !== null && sw !== null) {
         bulb = b
-        pointerEventsSystem.onPointerDown({ entity: sw, opts: { button: InputAction.IA_PRIMARY, hoverText: 'Light switch', maxDistance: 3 } }, () => {
+        pointerEventsSystem.onPointerDown({ entity: sw, opts: { button: InputAction.IA_PRIMARY, hoverText: 'Light switch', maxDistance: 4.5 } }, () => {
           setLamp(!cabin.lampOn)
           AudioSource.playSound(sfx, 'assets/audio/switch.ogg')
         })
       }
     }
-    if ((hinge !== null && bulb !== null && glass.length === 4) || tries > 600) engine.removeSystem(findCabin)
+    if ((hinge !== null && bulb !== null && lampModel !== null && glass.length === 4) || tries > 600) engine.removeSystem(findCabin)
   })
   engine.addSystem(cabinSystem)
   onReset(() => {
@@ -155,10 +163,33 @@ function cabinSystem(dt: number) {
     pl.intensity = PORCH * k
     const pm = Material.getMutable(porchBulb)
     if (pm.material?.$case === 'pbr') pm.material.pbr.emissiveIntensity = 5 * k
-    for (const g of glass) {
-      const gm = Material.getMutableOrNull(g)
-      if (gm !== null && gm.material?.$case === 'pbr') { gm.material.pbr.emissiveColor = Color3.create(1, 0.82, 0.55); gm.material.pbr.emissiveIntensity = 1.2 * k }
+    if (lampModel !== null) {
+      // the lantern's glass glows by an emissive texture baked into the GLB: off, it wears its own skin without the glow
+      if (k > 0) {
+        if (GltfNodeModifiers.has(lampModel)) GltfNodeModifiers.deleteFrom(lampModel)
+      } else {
+        GltfNodeModifiers.createOrReplace(lampModel, {
+          modifiers: [{ path: '', material: { material: { $case: 'pbr', pbr: { texture: Material.Texture.Common({ src: LAMP_SKIN }), emissiveIntensity: 0, roughness: 0.9, metallic: 0 } } } }]
+        })
+      }
     }
+    paintGlass(k)
     setLoop(buzz, intensity > 0)
+  } else if (glass.length === 4 && (tune.glass !== lastGlass || tune.glassGlow !== lastGlow)) {
+    paintGlass(intensity / LAMP) // a knob on the preview panel moved
+  }
+}
+
+/** The four panes: opacity from the tuning knob, a warm glow scaled by the bulb's state `k` (0 off, 1 lit, 0.25 dim). */
+function paintGlass(k: number) {
+  lastGlass = tune.glass
+  lastGlow = tune.glassGlow
+  for (const g of glass) {
+    const gm = Material.getMutableOrNull(g)
+    if (gm === null || gm.material?.$case !== 'pbr') continue
+    const pbr = gm.material.pbr
+    pbr.albedoColor = Color4.create(pbr.albedoColor?.r ?? 1, pbr.albedoColor?.g ?? 1, pbr.albedoColor?.b ?? 1, tune.glass)
+    pbr.emissiveColor = Color3.create(1, 0.82, 0.55)
+    pbr.emissiveIntensity = tune.glassGlow * k
   }
 }

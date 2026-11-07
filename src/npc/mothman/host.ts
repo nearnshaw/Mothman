@@ -140,7 +140,7 @@ export class MothmanHost {
     if (story.phase === 'revealed' && flashlight.on && !grace()) {
       story.litAfterReveal += dt
       if (story.litAfterReveal > 18 && flashlight.dead <= 0 && flashlight.dying <= 0) {
-        failLight(7)
+        failLight(10)
         story.litAfterReveal = 0
       }
     }
@@ -514,11 +514,11 @@ export class MothmanHost {
         let syncLeft = 0
         let onHim = 0 // seconds the beam has been held on him through the glass
         const bulb = () => Vector3.create(layout.cabin.bulb.x, 1.6, layout.cabin.bulb.z)
-        /** Three seconds of the beam on his face through the window and he snuffs it: sparks, and five seconds dead. */
+        /** Three seconds of the beam on his face through the window and he snuffs it: sparks, and ten seconds dead. */
         const snuff = (dt: number) => {
           if (cabin.inside && flashlight.on && flashlight.dead <= 0 && beamHits(host.body.eyePos())) onHim += dt
           else onHim = Math.max(0, onHim - dt * 2)
-          if (onHim >= 3) { onHim = 0; failLight(5, 0) }
+          if (onHim >= 3) { onHim = 0; failLight(10, 0) }
         }
         /** Both lights blink while he is at the glass. Every few seconds the beam falls into step with the bulb, or out of it. */
         const blink = (dt: number) => {

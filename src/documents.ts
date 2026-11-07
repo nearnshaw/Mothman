@@ -1,4 +1,4 @@
-import { engine, Entity, Transform, pointerEventsSystem, InputAction, AudioSource, inputSystem, PointerEventType, MeshRenderer, Material, MaterialTransparencyMode } from '@dcl/sdk/ecs'
+import { engine, Entity, Transform, pointerEventsSystem, PointerEvents, InputAction, AudioSource, inputSystem, PointerEventType, MeshRenderer, Material, MaterialTransparencyMode } from '@dcl/sdk/ecs'
 import { showDocument, closeDocument, docOpenFor, showCaption, captionsPending } from './telepathy'
 import { story } from './npc/mothman/host'
 import { setObjective } from './objectives'
@@ -122,13 +122,24 @@ function dressTags(box: Entity) {
 let pageSound: Entity
 /** Props taken when read (the collar): sunk 50 m under their spot until the next reset. */
 const taken: Array<{ e: Entity; key: string; at: Vector3 }> = []
+/** Every prop wired to a page: their hover hints go away while a page is up, so nothing sits over the text. */
+const wired: Entity[] = []
+
+function showHints(show: boolean) {
+  for (const e of wired) {
+    const pe = PointerEvents.getMutableOrNull(e)
+    if (pe === null) continue
+    for (const p of pe.pointerEvents) if (p.eventInfo !== undefined) p.eventInfo.showFeedback = show
+  }
+}
 
 function wire(e: Entity, key: string, counted: boolean) {
   const doc = TEXTS[key]
   if (doc === undefined) return
   if (counted) documents.total++
+  if (!wired.includes(e)) wired.push(e)
   pointerEventsSystem.onPointerDown(
-    { entity: e, opts: { button: InputAction.IA_PRIMARY, hoverText: doc.hover, maxDistance: doc.reach ?? 4 } },
+    { entity: e, opts: { button: InputAction.IA_PRIMARY, hoverText: doc.hover, maxDistance: doc.reach ?? 6 } },
     () => {
       if (docOpenFor() >= 0) return
       if (doc.style === 'monologue' && captionsPending() > 0) return // still saying the last thing
@@ -194,6 +205,7 @@ export function setupDocuments() {
     }
     const isOpen = open >= 0
     if (wasOpen && !isOpen && pendingAfter !== null) { sayAfter(pendingAfter); pendingAfter = null }
+    if (isOpen !== wasOpen) showHints(!isOpen)
     wasOpen = isOpen
   })
 }
