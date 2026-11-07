@@ -96,8 +96,8 @@ function place(m: Moth, dt: number) {
   const travel = Vector3.subtract(m.pos, m.prev)
   m.prev = Vector3.clone(m.pos)
   if (dt > 0 && Vector3.length(travel) > 0.004) m.dir = Vector3.normalize(Vector3.lerp(m.dir, Vector3.normalize(travel), Math.min(1, dt * 7)))
-  m.flap += dt * (m.state === 'drop' ? 7 : 11 + 3 * Math.sin(m.seed))
-  let roll = 60 * Math.sin(m.flap)
+  m.flap += dt * (m.state === 'drop' ? 7 : 14 + 3 * Math.sin(m.seed))
+  let roll = 78 * Math.sin(m.flap)
   if (m.state === 'in') roll += 28 * Math.sign(m.omega)
   if (m.state === 'drop') roll += m.t * 540
   let normal = Vector3.cross(m.dir, Vector3.cross(Vector3.Up(), m.dir)) // "up" for a level flyer
@@ -107,7 +107,7 @@ function place(m: Moth, dt: number) {
   t.position = m.pos
   t.rotation = Quaternion.lookRotation(normal, m.dir) // local +z = sprite normal, local +y (the head) = travel
   // the beat itself: the wings close toward the body and open again (the sprite's width), twice per roll cycle
-  const spread = m.state === 'drop' ? 0.55 : 0.3 + 0.7 * Math.abs(Math.cos(m.flap))
+  const spread = m.state === 'drop' ? 0.55 : 0.18 + 0.82 * Math.abs(Math.cos(m.flap))
   t.scale = Vector3.create(0.12 * spread, 0.12, 0.12)
 }
 

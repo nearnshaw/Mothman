@@ -169,6 +169,12 @@
       "skillPath": "player-physics/SKILL.md",
       "computedHash": "529689dc9c58ccf97db7c0413bce95a35cb236aba9870afcb098ec4d8b6040f9"
     },
+    "promote-scene": {
+      "source": "decentraland/sdk-skills",
+      "sourceType": "github",
+      "skillPath": "promote-scene/SKILL.md",
+      "computedHash": "1606b14c0eaa0bc1613b17f5d851c773b1999a1955b890253200049493ab9fa1"
+    },
     "report-sdk-issue": {
       "source": "decentraland/sdk-skills",
       "sourceType": "github",

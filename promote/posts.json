@@ -1,0 +1,562 @@
+{
+  "game": "Mothman",
+  "tagline": "You have one flashlight. Something answers it.",
+  "link": "",
+  "handle": "@yourhandle",
+  "listing": {
+    "short": "Walk the TNT woods outside Point Pleasant, 1966, with one flashlight, looking for your dog. Read what the last people left. Something answers the light.",
+    "long": "You follow your dog Duke under the fence of the old explosives plant north of Point Pleasant, the week the 1966 sightings began. One flashlight, a winding plant road, the watchman's cabin with its bulb still burning, and three storage bunkers with what the last people out there wrote down: a newspaper, a plant map, a sheriff's statement, a reporter's notebook, the stencils on the concrete.\n\nIt is a single-player horror story for one sitting, best on desktop with the sound on. The flashlight is the only way to see, and the longer it stays on, the closer he comes. Turn it off when it stutters. That is the whole game, and it is harder than it sounds."
+  },
+  "audience": {
+    "who": {
+      "text": "People who read the 1966 Point Pleasant record as evidence: they know the Partridge statement and the couples in the car, they argue crane against owl against something else, and they want a scare that keeps to the documents.",
+      "source": "assumed"
+    },
+    "not_for": {
+      "text": "Players who want to hunt, trap or shoot the creature. There is no weapon, only a flashlight, and you never hunt anything.",
+      "source": "gdd"
+    },
+    "insight": {
+      "text": "Every documented sighting happened inside somebody's light: headlights, a porch lamp, a flashlight on a barn. They already know that. This is the first time they get to hold the light.",
+      "source": "gdd"
+    },
+    "likes": [
+      {
+        "text": "Threads built on one photo or one account: 'The photos that scared you', 'What did they see?', 'My wife's sighting'. A single image with a question outperforms a wall of text.",
+        "source": "research",
+        "url": "https://www.reddit.com/r/Cryptozoology/top/?t=year"
+      },
+      {
+        "text": "No AI pictures. r/Cryptozoology's rules: 'Fully AI generated images are also not allowed' and 'Any AI generated images, stories, or comments aren't allowed.' r/cryptids: 'No AI Generated Art And Text'. Renders of the real scene, labelled as renders, are the safe format.",
+        "source": "research",
+        "url": "https://subriff.com/subreddit/Cryptozoology"
+      },
+      {
+        "text": "Short first-encounter clips: 'Mothman first encounter!', 'Mothman is SCARY', 'Ever play a mothman horror game?' are the Shorts this audience makes and watches; the 4.6M-view ones are a single moment, no voice-over.",
+        "source": "research",
+        "url": "https://www.youtube.com/results?search_query=mothman+horror+game"
+      },
+      {
+        "text": "Flashlights are a genre topic of their own: 'Light sources on horror games' has 13M views as a Short, and 'This Horror Game Punishes You For Blinking' is the mechanic-as-hook format.",
+        "source": "research",
+        "url": "https://www.youtube.com/shorts/YOdvkDV-d_E"
+      },
+      {
+        "text": "In their own study of r/Cryptozoology the owner recorded that members asked for 'a cryptid hunter in a forest' and were pointed at BIGFOOT and Folklore Hunter, both hunts; a 'respectful search' was the community's own counter-suggestion.",
+        "source": "gdd"
+      }
+    ],
+    "trusts": [
+      {
+        "text": "The Mothman Museum in Point Pleasant (Jeff Wamsley) as the keeper of the clippings; its archive is the sheet's only Mothman-specific source.",
+        "source": "repo"
+      },
+      {
+        "text": "The moderators of r/Mothman and r/cryptids, and the small YouTube channels that play every Mothman indie game with no commentary.",
+        "source": "assumed"
+      }
+    ],
+    "outside": [
+      {
+        "text": "Appalachian local history: the TNT area is a real place (the McClintic Wildlife Management Area), the igloos are a real urbex destination, and Point Pleasant runs a Mothman Festival.",
+        "source": "repo"
+      },
+      {
+        "text": "Moths and why they come to light: the 2024 Nature Communications study behind the game's moths has a plain-language audience on iNaturalist and in entomology threads.",
+        "source": "repo"
+      }
+    ],
+    "venues": [
+      {
+        "name": "r/Mothman",
+        "kind": "subreddit",
+        "url": "https://www.reddit.com/r/Mothman/",
+        "size": "29,692 members (subriff mirror, 2026-11-06)",
+        "why": "The one room that is only about him. 'Keep it about Mothman' is the whole rule, and a game built from the 1966 record is on topic.",
+        "rules": "Verbatim (mirror, 2026-11-06): 'Be kind to one another. Feel free to share your beliefs, but be respectful about others' beliefs'; 'Keep it about Mothman. Tangents are fine, but wildly off topic discussions will be scrutinized'; 'No spamming and t-shirt scams. Automod will filter you out and the moderator will make fun of you.' The mirror infers 'self-promotion not allowed' from the spam rule. [CHECK: confirm on the live sidebar and message the mod before posting]",
+        "walk_in": "Message the moderator first: a game by one person, built from the record, one post, no merch. Comment on sighting threads with what the record actually says before posting anything. Then the gate render with the question 'what did I get wrong about the TNT area'.",
+        "post": "reddit-01",
+        "source": "research",
+        "verified": "2026-11-06"
+      },
+      {
+        "name": "r/cryptids",
+        "kind": "subreddit",
+        "url": "https://www.reddit.com/r/cryptids/",
+        "size": "230,094 members (subriff mirror, 2026-11-06)",
+        "why": "Mothman is a 'common law cryptid' here by rule, so he is welcome, and the sub is the playful, image-first crowd the GDD says the moths may travel to on their own.",
+        "rules": "Verbatim (mirror, 2026-11-06): 'Posts must be about or relating to cryptids'; 'No Low Effort/Karma Farming Posts'; 'No Spam: No repetitive posts/comments'; 'Common Law Cryptid: If a creature is commonly referred to as a cryptid then it is welcomed in this sub'; 'No AI Generated Art And Text'. The mirror lists 'Self-promotion not allowed' as its own inference from the spam rule. [CHECK: confirm on the live sidebar; if the mods say no games, keep this venue for comments only]",
+        "walk_in": "Post as the dev, once, an image that is on topic by itself (the collar ring, labelled a render from the scene, not AI), the game named in a comment only if asked. Answer every comment the same day.",
+        "post": "reddit-02",
+        "source": "research",
+        "verified": "2026-11-06"
+      },
+      {
+        "name": "r/IndieDev",
+        "kind": "subreddit",
+        "url": "https://www.reddit.com/r/IndieDev/",
+        "size": "457,569 members (subriff mirror, 2026-11-06)",
+        "why": "Devs who upvote one surprising mechanic in the title with a GIF and a question: the moths that leave in a straight line when you switch off, and a creature that plans with an HTN.",
+        "rules": "Third-party guides call it 'the more relaxed cousin of r/gamedev', showcases welcome with the right flair; a January 2026 snapshot shows a 'Weekly Monday Megathread: show us what you're working on'. The subriff mirror lists 'self-promotion not allowed' as its own inference. [CHECK: read the live sidebar for the flair list and the posting frequency before posting]",
+        "walk_in": "Comment on three devs' posts first. Post in the Monday megathread once, then the making-of as a showcase with the flair the sidebar names, with a real question at the end.",
+        "post": "reddit-03",
+        "source": "research",
+        "verified": "2026-11-06"
+      },
+      {
+        "name": "r/Cryptozoology",
+        "kind": "subreddit",
+        "url": "https://www.reddit.com/r/Cryptozoology/",
+        "size": "343,910 members (subriff mirror, 2026-11-06)",
+        "why": "The evidence-minded crowd the GDD was written for. But rule 8 bans the creature outright, so this is a room to listen in, never to post the game.",
+        "rules": "Verbatim (mirror, 2026-11-06), rule 8 'Paranormal Creatures Are Banned': 'Wendigos, skinwalkers, dogmen, Mothman, and similar creatures are not allowed.' Also 'Fully AI generated images are also not allowed' and 'Self-promotion is allowed for sharing personal content like YouTube videos or podcasts' with a description comment. [CHECK: the mirror shows two rule sets; confirm rule 8 on the live sidebar]",
+        "walk_in": "No post. Read the sighting-analysis threads for the words they use; when someone asks for a cryptid game (it happens: the owner's sheet logged 'Is there a cryptozoology video game?'), answer honestly in a comment and let them ask.",
+        "post": null,
+        "source": "research",
+        "verified": "2026-11-06"
+      },
+      {
+        "name": "Decentraland Discord",
+        "kind": "discord",
+        "url": "https://discord.com/servers/decentraland-417796904760639509",
+        "size": "130,038 members (server listing, 2026-11-06)",
+        "why": "The people who already have the client installed. The first twenty players who need no download come from here.",
+        "rules": "The listing shows no rules or channel names. The creator FAQ points creators at the SDK support channel and a 'Community Building Discord'. [CHECK: which channel takes scene announcements, and whether a scene post needs a mod's nod]",
+        "walk_in": "Post the launch line with the key art in the channel the mods name, then run one hosted night: you in the scene at a set UTC time, walking the road with whoever comes.",
+        "post": "launch-01",
+        "source": "research",
+        "verified": "2026-11-06"
+      },
+      {
+        "name": "Small no-commentary horror channels on YouTube",
+        "kind": "creator",
+        "url": "https://www.youtube.com/results?search_query=mothman+indie+horror+game+no+commentary",
+        "size": "channels of 100 to 3,000 views per video",
+        "why": "They already play every indie game with Mothman in the title; a 20-minute single-player horror is exactly their format.",
+        "rules": "None; a link and the key art by message, no ask beyond 'if you like it'. [CHECK: pick three channels by hand from the search page]",
+        "walk_in": "Send the jump-in link, the key art and the one-line pitch. Say it is desktop-only and about twenty minutes.",
+        "post": null,
+        "source": "research",
+        "verified": "2026-11-06"
+      }
+    ],
+    "assumptions": [
+      "The first players come from the Mothman and cryptid subreddits, not from a horror-game community. The GDD's audience line is the agent's proposal from the owner's research sheet, not a confirmed choice.",
+      "r/Cryptozoology, the GDD's first-choice crowd, cannot be posted to at all: its rule 8 bans Mothman. Everything here routes around that.",
+      "The subreddit rules above come from a mirror site read today, not the live sidebars. Re-read each sidebar before posting.",
+      "Nobody on the team has a handle yet; the mockups show @yourhandle."
+    ]
+  },
+  "plan": {
+    "experiment": "One image post in r/Mothman (reddit-01): the gate render, the question 'what did I get wrong about the TNT area', the game named in the body, after a message to the moderator. Measure who clicks through and reaches the cabin.",
+    "first_20": "Message 20 people by hand who posted a sighting story or a question in r/Mothman or r/cryptids this month: one line, the record angle, no link until they answer. Add three small no-commentary YouTube channels.",
+    "got_it": "Reached the watchman's cabin and read the sheriff's statement (the end of the second movement, about a third of the way in).",
+    "stop_rule": "Fewer than 6 of the 20 reach the cabin within a week: change the pitch or the venue before posting anywhere else. No ads.",
+    "days": null
+  },
+  "hashtags": {
+    "core": [
+      "#Mothman",
+      "#Decentraland",
+      "#IndieHorror"
+    ],
+    "extra": [
+      "#PointPleasant",
+      "#cryptids",
+      "#horrorgame",
+      "#folklorehorror",
+      "#gamedev"
+    ]
+  },
+  "brand": {
+    "text": "#E6DCC0",
+    "ink": "#0A0A0C",
+    "accent": "#FF3B2A",
+    "font": "/Users/Nico/Library/Application Support/creator-hub/Scenes/Mothman/assets/fonts/SpecialElite-Regular.ttf",
+    "font_small": "/Users/Nico/Library/Application Support/creator-hub/Scenes/Mothman/assets/fonts/SpecialElite-Regular.ttf",
+    "wordmark": "MOTHMAN",
+    "icon_text": "66",
+    "icon_top": "POINT PLEASANT",
+    "icon_bottom": "NOVEMBER",
+    "quote_tag": "FROM THE PLANT ROAD  //  MOTHMAN"
+  },
+  "keyart": {
+    "1920x1080": "images/keyart/hero_1920x1080.png",
+    "1080x1080": "images/keyart/hero_1080x1080.png"
+  },
+  "keyart_logo_y": 0.2,
+  "x_header_logo": "left",
+  "event_banners": false,
+  "quote_cards": [
+    {
+      "id": "quote_window",
+      "render": "images/renders/cabin.png",
+      "line": "Something is at\nthe window."
+    },
+    {
+      "id": "quote_close",
+      "render": "images/renders/hero.png",
+      "line": "The beam stutters.\nIt does that when\nsomething is close."
+    },
+    {
+      "id": "quote_hound",
+      "render": "images/renders/dog.png",
+      "line": "Not Duke.\nSomebody's hound,\nstill wearing\nits collar."
+    }
+  ],
+  "images": {
+    "keyart_landscape": {
+      "file": "images/social/keyart_1920x1080.png",
+      "alt": "The plant road at night in a flashlight beam, a winged figure with red eyes standing on it between birches, the MOTHMAN wordmark above."
+    },
+    "keyart_square": {
+      "file": "images/social/keyart_1080x1080.png",
+      "alt": "Square key art: the winged figure on the road in the beam, the MOTHMAN wordmark above."
+    },
+    "x_header": {
+      "file": "images/social/x_header_1500x500.png",
+      "alt": "Banner: the road and the figure in the beam, the MOTHMAN wordmark on the left."
+    },
+    "hero": {
+      "file": "images/renders/hero.png",
+      "alt": "A winged figure with two red eyes stands on a gravel road at night, lit by a flashlight, birches on both sides."
+    },
+    "gate": {
+      "file": "images/renders/gate.png",
+      "alt": "A painted sign on a post in a flashlight beam: W.VA. Ordnance Works, former explosives plant, storage bunkers ahead, no entry at night."
+    },
+    "cabin": {
+      "file": "images/renders/cabin.png",
+      "alt": "A wooden cabin at night with one window lit from inside, a dark figure standing at the glass."
+    },
+    "dog": {
+      "file": "images/renders/dog.png",
+      "alt": "A dead hound lying on a dirt road in a flashlight beam, a paw print beside it, birches behind."
+    },
+    "collars": {
+      "file": "images/renders/collars.png",
+      "alt": "Nine dog collars in a ring on a concrete floor around a heap of dead moths, lit by a flashlight."
+    },
+    "bunker": {
+      "file": "images/renders/bunker.png",
+      "alt": "The concrete headwall of a storage bunker under an earth mound at night, its steel door hanging open, in a flashlight beam."
+    },
+    "quote_window": {
+      "file": "images/social/quote_window.png",
+      "alt": "The cabin window with the line: Something is at the window."
+    },
+    "quote_close": {
+      "file": "images/social/quote_close.png",
+      "alt": "The figure on the road with the line: The beam stutters. It does that when something is close."
+    },
+    "quote_hound": {
+      "file": "images/social/quote_hound.png",
+      "alt": "The dead hound with the line: Not Duke. Somebody's hound, still wearing its collar."
+    },
+    "logo_lockup": {
+      "file": "logo/mothman_lockup_on_black.png",
+      "alt": "MOTHMAN wordmark with the tagline: You have one flashlight. Something answers it."
+    },
+    "icon": {
+      "file": "logo/mothman_icon_1024.png",
+      "alt": "A glowing red 66 between the words POINT PLEASANT and NOVEMBER."
+    }
+  },
+  "shotlist_tips": [
+    "Record in the Decentraland desktop Explorer at 1920x1080 with graphics quality above Low: on Low no scene light renders and the flashlight is invisible.",
+    "Sound on, system audio recorded: the howl up the road, the TV whine when the beam stutters and his calls from where you are not looking carry every clip.",
+    "He only notices the beam after about 18 seconds of it being on, and presses after 45. Hold the light to bring him; switch off to send him up and away.",
+    "The cabin beat needs the bulb on with you inside for about half a minute before the window, a minute for the door. Switch the bulb off to end it.",
+    "A death resets the whole night (the dog is back on the road, the papers unread). Use that for retakes of the opening.",
+    "For vertical reels keep him in the middle third of the 16:9 frame; he stands where you are looking.",
+    "Keep bunker 7, the voice and the walk back to the gate out of public clips. The reveal is the game."
+  ],
+  "posts": [
+    {
+      "id": "launch-01",
+      "kind": "launch",
+      "title": "Launch: the promise",
+      "cta": true,
+      "text": "Point Pleasant, West Virginia. November 1966.\n\nYour dog went under the wire at the old TNT plant at dusk. So did you.\n\nYou have one flashlight. Something answers it.\n\nMOTHMAN, a horror scene in Decentraland (desktop): {LINK}",
+      "image": "keyart_landscape",
+      "ig_image": "keyart_square"
+    },
+    {
+      "id": "launch-02",
+      "kind": "launch",
+      "title": "Launch: the record",
+      "cta": true,
+      "text": "Every sighting in 1966 was in a light. Headlights. A porch lamp. A flashlight on a hay barn.\n\nNobody has seen it in the dark. Nobody has looked.\n\nMOTHMAN is open. The TNT area, one flashlight, your missing dog: {LINK}",
+      "image": "hero",
+      "ig_image": "keyart_square"
+    },
+    {
+      "id": "launch-03",
+      "kind": "launch",
+      "title": "Launch: what it is",
+      "cta": true,
+      "text": "A single-player horror story in the woods outside Point Pleasant, 1966. One sitting, about twenty minutes [CHECK: length not yet measured], desktop and headphones.\n\nWalk the plant road. Read what the last people left. Keep the light on, or don't.\n\n{LINK}",
+      "image": "gate",
+      "ig_image": "keyart_square"
+    },
+    {
+      "id": "launch-04",
+      "kind": "launch",
+      "title": "Launch: the dare",
+      "cta": true,
+      "text": "The rule is simple. The longer your light is on, the closer he comes.\n\nThe gate is 270 metres back down the road. Walk it in the dark, or keep the light and find out.\n\n{LINK}",
+      "image": "bunker",
+      "ig_image": "quote_close"
+    },
+    {
+      "id": "soon-01",
+      "kind": "soon",
+      "title": "Coming soon: the howl",
+      "text": "\"He has not come back. That is him, howling. Somewhere far up the road.\"\n\nMOTHMAN. Coming soon to Decentraland.",
+      "image": "dog",
+      "ig_image": "quote_hound"
+    },
+    {
+      "id": "soon-02",
+      "kind": "soon",
+      "title": "Coming soon: mood",
+      "text": "W.VA. ORDNANCE WORKS\nFORMER EXPLOSIVES PLANT\n1942 - 1945\nSTORAGE BUNKERS AHEAD\n\nNO TRESPASSING\nNO ENTRY AT NIGHT\n\n(You went in at dusk.)",
+      "image": "gate",
+      "ig_image": "gate"
+    },
+    {
+      "id": "soon-03",
+      "kind": "soon",
+      "title": "Coming soon: countdown template",
+      "text": "{N} nights until the plant gate opens.\n\nMOTHMAN lands {DATE}. Bring a flashlight. Learn when to put it out.",
+      "image": "logo_lockup",
+      "ig_image": "icon"
+    },
+    {
+      "id": "soon-04",
+      "kind": "soon",
+      "title": "Coming soon: for the ones who know the record",
+      "text": "Partridge put the flashlight on the barn and the eyes came back at him like bicycle reflectors.\n\nThe dog went after them. He never came back.\n\nThis November, you hold the flashlight. MOTHMAN, coming soon.",
+      "image": "cabin",
+      "ig_image": "quote_window"
+    },
+    {
+      "id": "footage-01",
+      "kind": "footage",
+      "title": "Footage: the trailer cut",
+      "text": "One flashlight. Something answers it.\n\n[FOOTAGE]",
+      "image": "keyart_landscape",
+      "footage": "30 seconds, 16:9, captions on. Shot order: (1) the gate from inside, beam off, stars, 3 s, card 'Point Pleasant, W.Va. November 1966'; (2) the beam clicks on at the paw prints on the road, moths arrive, 6 s; (3) the dead dog in the beam, pan up the empty road, 4 s, card 'Your dog went under the wire at dusk'; (4) the cabin window from outside with the bulb on, the figure at the glass, 4 s, card 'Something is at the window'; (5) two red eyes far down the road in the beam, the beam stutters, the TV whine, 5 s, card 'Something answers it'; (6) switch off: black, the moths leaving straight, 3 s; (7) the wordmark, 5 s. Nothing from bunker 7. The placeholder here is a teaser cut from the key art, not gameplay: replace it with a recording."
+    },
+    {
+      "id": "footage-02",
+      "kind": "footage",
+      "title": "Footage: the moths leave straight",
+      "text": "Watch what they do when the light goes out.\n\n[FOOTAGE]",
+      "image": "hero",
+      "footage": "First person on the road with the beam on for ten seconds so five or six moths are orbiting the cone. Hold the shot still, then press F. The moths leave in straight lines within a second. 8 to 10 seconds, cut one second after they are gone. Loops well; works vertical if the cone is centred."
+    },
+    {
+      "id": "footage-03",
+      "kind": "footage",
+      "title": "Footage: the window",
+      "text": "The bulb is on. It can see the bulb.\n\n[FOOTAGE]",
+      "image": "cabin",
+      "footage": "Inside the cabin with the bulb on, reading the plant map, about 30 seconds in. Turn to the nearest window as the bulb starts to flicker: his face at the glass, the tap on the window, the caption 'Something is at the window.' 6 to 8 seconds, cut on the tap. Keep the light switch and what happens after off screen."
+    },
+    {
+      "id": "footage-04",
+      "kind": "footage",
+      "title": "Footage: eyeshine",
+      "text": "Two red reflectors, forty yards out. Your flashlight was on at the time.\n\n[FOOTAGE]",
+      "image": "hero",
+      "footage": "On the road with the beam on, sweep slowly left to right across the trees at mid distance. Two red points light up where the beam passes and go dark when it moves on. 5 to 7 seconds. Do not approach; the shot ends before he moves. Best vertical with the eyes in the middle third."
+    },
+    {
+      "id": "footage-05",
+      "kind": "footage",
+      "title": "Footage: the road is empty",
+      "text": "You look back for the dead dog.\n\n[FOOTAGE]",
+      "image": "dog",
+      "footage": "Walk up to the dead dog on the road, hold the beam on it for three seconds, walk ten metres on, turn around: the road is empty, the caption 'Something took it while your back was turned.' 10 to 12 seconds. Cut on the caption."
+    },
+    {
+      "id": "quote-01",
+      "kind": "quote",
+      "title": "Quote: the window",
+      "text": "\"Something is at the window.\"\n\nThe watchman's cabin is the one place with a light that is not yours.",
+      "image": "quote_window"
+    },
+    {
+      "id": "quote-02",
+      "kind": "quote",
+      "title": "Quote: the stutter",
+      "text": "\"The beam stutters. It does that when something is close.\"\n\nNot a battery problem.",
+      "image": "quote_close"
+    },
+    {
+      "id": "quote-03",
+      "kind": "quote",
+      "title": "Quote: the hound",
+      "text": "\"A dog on the road. Not Duke. Somebody's hound, still wearing its collar.\"",
+      "image": "quote_hound"
+    },
+    {
+      "id": "bts-01",
+      "kind": "bts",
+      "title": "Behind the scenes: he plans",
+      "text": "He is not scripted. Every tick the game writes what he can know as facts (beam on? how long? how far? is the cabin bulb burning?) and a hierarchical task network picks the first plan whose conditions hold.\n\nHe replans only when the lights change.\n\n#gamedev #SDK7",
+      "image": "hero"
+    },
+    {
+      "id": "bts-02",
+      "kind": "bts",
+      "title": "Behind the scenes: the moths are real",
+      "text": "The moths in the beam orbit it, stall upward, fall back and tumble. That is not animation for mood: it is the three flight behaviours a 2024 Nature Communications study filmed around artificial light.\n\nThey are in the game from minute one. Nobody points at them.\n\n#gamedev",
+      "image": "collars"
+    },
+    {
+      "id": "reddit-01",
+      "kind": "reddit",
+      "title": "Reddit: the TNT area, as a question",
+      "subreddit": "r/Mothman",
+      "post_title": "I built the 1966 TNT area as a horror game you walk with one flashlight. What did I get wrong about the place? (render from the scene, not AI)",
+      "flair": null,
+      "link_in": "body",
+      "text": "One person, a few weeks, built from the public record: the plant gate, a watchman's cabin, the storage igloos under their mounds, the Partridge statement in the cabin. You are looking for your dog.\n\nRendered from the scene itself. I would rather hear what is wrong with it from people who know the place than from anyone else.\n\nIt is on Decentraland (desktop): {LINK}",
+      "image": "gate",
+      "why_here": "The only room that is about him alone; a maker asking the regulars to correct the place is the native way in.",
+      "rules_note": "'Keep it about Mothman'; 'No spamming and t-shirt scams'. One post, after a message to the moderator. [CHECK: re-read the sidebar before posting]",
+      "modelled_on": [
+        {
+          "title": "[CHECK: a top sighting-discussion post of the last year]",
+          "url": "https://www.reddit.com/r/Mothman/top/?t=year",
+          "note": "the feed was rate-limited this session; open in a browser"
+        },
+        {
+          "title": "[CHECK: a top 'I made this' art or craft post]",
+          "url": "https://www.reddit.com/r/Mothman/top/?t=year",
+          "note": "made-by-a-fan posts with one image and a question"
+        }
+      ]
+    },
+    {
+      "id": "reddit-02",
+      "kind": "reddit",
+      "title": "Reddit: the collars",
+      "subreddit": "r/cryptids",
+      "post_title": "Nine dog collars in a ring, nine farms, every one with a yard light burning. A scene from a Mothman game I made (render, not AI)",
+      "flair": null,
+      "link_in": "comment",
+      "text": "Bunker 6 of the old TNT plant. The collars are from the farms along Route 62 in the record, Partridge's dog among them. Scratches in groups of five on the walls of the bunker before it.\n\nI made it; ask me anything about the place.",
+      "image": "collars",
+      "why_here": "Mothman is welcome by the 'common law cryptid' rule, and the sub rewards one on-topic image with a story under it.",
+      "rules_note": "'No Spam', 'No Low Effort', 'No AI Generated Art And Text'; the mirror infers no self-promotion, so the game and link go in a comment only if asked. [CHECK: confirm with the mods before posting]",
+      "modelled_on": [
+        {
+          "title": "[CHECK: a top image post with a story in the body]",
+          "url": "https://www.reddit.com/r/cryptids/top/?t=year",
+          "note": "the feed was rate-limited this session; open in a browser"
+        },
+        {
+          "title": "[CHECK: a 'my cryptid art' post]",
+          "url": "https://www.reddit.com/r/cryptids/top/?t=year",
+          "note": "one image, the maker in the first line"
+        }
+      ]
+    },
+    {
+      "id": "reddit-03",
+      "kind": "reddit",
+      "title": "Reddit: making-of the moths and the planner",
+      "subreddit": "r/IndieDev",
+      "post_title": "I made a horror game where the monster is after your flashlight, not you. The moths in the beam are modelled on a 2024 study, and he plans with an HTN. What would you want to see first: the moths or him?",
+      "flair": "[CHECK: the showcase flair the sidebar names]",
+      "link_in": "body",
+      "text": "Single-player, first person, one flashlight, no weapons. The longer the beam is on, the closer he comes; switch off and he goes straight up like a helicopter, which is what the 1966 witnesses said he did.\n\nTwo things I am proud of: the moths orbit, stall and tumble the way a 2024 Nature Communications study filmed insects doing around a lamp, and the creature runs on a hierarchical task network that only replans when the lights change.\n\nQuestion: he notices the beam after 18 seconds and presses after 45. Too slow for a 20-minute game?\n\nOn Decentraland (desktop): {LINK}",
+      "image": "hero",
+      "why_here": "Mechanic in the title, a specific detail, a real question: the shape of the posts that carried this year.",
+      "rules_note": "Pick the showcase flair; one post per milestone; the Monday megathread first. [CHECK: re-read the sidebar for flair and frequency]",
+      "modelled_on": [
+        {
+          "title": "We're sick of platformers so we made one where you get to be the bad guy",
+          "url": "https://www.reddit.com/r/IndieDev/comments/1wq043w/were_sick_of_platformers_so_we_made_one_where_you/",
+          "note": "the twist on the genre in the title"
+        },
+        {
+          "title": "I tried to make quitting my game feel like a bad decision",
+          "url": "https://www.reddit.com/r/IndieDev/comments/1vishhm/i_tried_to_make_quitting_my_game_feel_like_a_bad/",
+          "note": "one design idea as the whole title"
+        },
+        {
+          "title": "To prevent players soft-locking the game, I added an overheating mechanic to my flippers.",
+          "url": "https://www.reddit.com/r/IndieDev/comments/1sbcbtl/to_prevent_players_softlocking_the_game_i_added/",
+          "note": "mechanic, reason, GIF"
+        }
+      ]
+    },
+    {
+      "id": "short-01",
+      "kind": "short",
+      "title": "Short: the window",
+      "hook": "Something is at the window.",
+      "beats": [
+        "the bulb is on",
+        "it can see the bulb",
+        "half a minute of quiet",
+        "then the glass",
+        "put it out"
+      ],
+      "yt_title": "The cabin has the only light that isn't yours. That's the problem.",
+      "text": "A horror scene in Decentraland set in the 1966 TNT area outside Point Pleasant. One flashlight. {LINK}\n\n#Mothman #horrorgame #cryptids",
+      "image": "quote_window",
+      "footage": "Vertical. Start inside the cabin on the plant map, the bulb buzzing, hook card over it for 2 seconds; the bulb flickers; turn to the window: his face, the tap; cut to the light switch and black. 15 to 20 seconds. Keep the window in the middle third of the 16:9 recording. Nothing of the door or what follows.",
+      "modelled_on": [
+        {
+          "title": "Mothman first encounter! #gaming #mothman #folklore",
+          "url": "https://www.youtube.com/shorts/KwVAEfNedQU",
+          "note": "one encounter, captions, no voice-over"
+        },
+        {
+          "title": "Mothman #shorts #mothman #scary (4.6M views)",
+          "url": "https://www.youtube.com/shorts/EBf1fplfzDQ",
+          "note": "a single moment carries it"
+        }
+      ]
+    },
+    {
+      "id": "short-02",
+      "kind": "short",
+      "title": "Short: the light is the problem",
+      "hook": "This horror game punishes you for keeping the light on.",
+      "beats": [
+        "18 seconds: he notices",
+        "45 seconds: he comes",
+        "the beam stutters",
+        "not a battery problem",
+        "put it out"
+      ],
+      "yt_title": "This horror game punishes you for keeping the flashlight on",
+      "text": "MOTHMAN: the 1966 TNT area, one flashlight, your missing dog. On Decentraland, desktop. {LINK}\n\n#Mothman #horrorgame #indiehorror",
+      "image": "quote_close",
+      "footage": "Vertical. Beam on down the road, the hook card over the first 2 seconds; a count-up caption as the seconds pass; the two red eyes; the beam stutters with the TV whine; he is suddenly at mid distance; press F: black, wings going up. 20 to 30 seconds. Keep the road centred for the 9:16 crop.",
+      "modelled_on": [
+        {
+          "title": "This Horror Game Punishes You For Blinking",
+          "url": "https://www.youtube.com/shorts/6aeizeE0fNA",
+          "note": "mechanic as the hook"
+        },
+        {
+          "title": "Your Horror Game Without vs With Lights",
+          "url": "https://www.youtube.com/shorts/No7tYfNjnfA",
+          "note": "light as the subject"
+        },
+        {
+          "title": "Light sources on horror games (13M views)",
+          "url": "https://www.youtube.com/shorts/YOdvkDV-d_E",
+          "note": "the flashlight itself is a topic people watch"
+        }
+      ]
+    }
+  ]
+}

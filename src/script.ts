@@ -19,7 +19,7 @@ export const SIGN = 'W.VA. ORDNANCE WORKS\nFORMER EXPLOSIVES PLANT\n1942 - 1945\
 
 export const OPENING = {
   where: 'The TNT area, north of Point Pleasant. The old explosives plant.',
-  gate: 'The plant gate, chained since 1945. Duke went under the wire at dusk, after something in the trees. So did you.',
+  gate: 'The plant gate, chained since 1945. Duke went under the wire at dusk, after something in the trees. So did I.',
   howl: 'He has not come back. That is him, howling. Somewhere far up the road.'
 }
 
@@ -35,7 +35,7 @@ export const HINTS = {
 export const CAPTIONS = {
   // the road
   dogSeen: 'A dog on the road. Not Duke. Somebody\'s hound, still wearing its collar.',
-  dogGone: 'You look back for the dead dog. The road is empty. Something took it while your back was turned.',
+  dogGone: 'I look back for the dead dog. The road is empty. Something took it while my back was turned.',
   howlStopped: 'The howling has stopped.',
   // the flashlight
   stutter: 'The beam stutters. It does that when something is close.',
@@ -96,8 +96,9 @@ export type Page = {
   hover: string
   text: string
   /** How the page is drawn: `typed` on aged paper in a typewriter face (newsprint, forms, stencils), `hand` in pen
-   *  on a notebook leaf, `look` for what is in front of you rather than written (a dark panel, no paper). */
-  style?: 'typed' | 'hand' | 'look'
+   *  on a notebook leaf, `look` for what is in front of you rather than written (a dark panel, no paper), `monologue`
+   *  for what you make of a thing: no page at all, the text is said as caption lines, then `after`. */
+  style?: 'typed' | 'hand' | 'look' | 'monologue'
   /** Something written by hand on the page, under the text: ballpoint by default, or pencil. */
   note?: string
   ink?: 'ballpoint' | 'pencil'
@@ -150,7 +151,7 @@ export const PAGES: Record<string, Page> = {
   notice6: { hover: 'Read the stencil', style: 'typed', text: stencil(6), after: ['The door has been forced from the outside. The frame is bent.', 'Dog prints in the dirt at the step, going in. None coming out.'] },
   notice7: { hover: 'Read the stencil', style: 'typed', text: stencil(7), after: ['The big one, the map said. Lights fail here.', 'Duke\'s tracks come right up the step.'] },
   tally: {
-    hover: 'Look at the marks', reach: 8, style: 'look',
+    hover: 'Look at the marks', reach: 8, style: 'monologue',
     text:
       'Scratches in the concrete, floor to ceiling, both walls, in groups of five. Thousands of them. Tens of thousands.\n\n' +
       'The newest are sharp-edged. The oldest have been here longer than the plant has been shut.\n\n' +
@@ -167,7 +168,7 @@ export const PAGES: Record<string, Page> = {
     after: ['Nine dogs. Nine farms along the plant road.', 'Every one of them had a yard light burning.']
   },
   collar: {
-    hover: 'Pick up the collar', remove: true, style: 'look',
+    hover: 'Pick up the collar', remove: true, style: 'monologue',
     text:
       'Duke\'s collar, chewed through. The buckle is still done up.\n\n' +
       'The tag reads:  DUKE  —  RT. 62  —  IF FOUND CONTACT THE FARM',
